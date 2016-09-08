@@ -1,0 +1,70 @@
+\begin{thebibliography}{10}
+
+\bibitem{ctaRail2014}
+CTAConnections.
+\newblock {CTA Ride the Rails: Blue Line to O'Hare in Real Time}.
+\newblock \url{https://youtu.be/n6xJFpPY_7s}, 2014.
+\newblock [Online; accessed 15-August-2016].
+
+\bibitem{ctaRail2015}
+CTAConnections.
+\newblock {CTA Ride the Rails: Blue Line to O'Hare in Real Time (2015)}.
+\newblock \url{https://youtu.be/Kw_BbQoDv8o}, 2015.
+\newblock [Online; accessed 15-August-2016].
+
+\bibitem{milford2015place}
+Michael Milford, Hanme Kim, Michael Mangan, Stefan Leutenegger, Tom Stone,
+  Barbara Webb, and Andrew Davison.
+\newblock Place recognition with event-based cameras and a neural
+  implementation of seqslam.
+\newblock {\em arXiv preprint arXiv:1505.04548}, 2015.
+
+\bibitem{milford2015sequence}
+Michael Milford, Chunhua Shen, Stephanie Lowry, Niko Suenderhauf, Sareh
+  Shirazi, Guosheng Lin, Fayao Liu, Edward Pepperell, Cesar Lerma, Ben Upcroft,
+  et~al.
+\newblock Sequence searching with deep-learnt depth for condition-and
+  viewpoint-invariant route-based place recognition.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition Workshops}, pages 18--25, 2015.
+
+\bibitem{Milford2012}
+Michael~J. Milford and Gordon~F. Wyeth.
+\newblock {SeqSLAM: Visual route-based navigation for sunny summer days and
+  stormy winter nights}.
+\newblock {\em Proceedings - IEEE International Conference on Robotics and
+  Automation}, pages 1643--1649, 2012.
+
+\bibitem{indoorOutdoor2}
+RoboticsAtHsUlm.
+\newblock {Demonstrating System Integration by Composition: Seamless Indoor and
+  Outdoor Navigation}.
+\newblock \url{https://youtu.be/fS3PJMswlH4}, 2015.
+\newblock [Online; accessed 15-August-2016].
+
+\bibitem{indoorOutdoor1}
+RoboticsAtHsUlm.
+\newblock {Seamless Indoor and Outdoor Navigation based on OpenStreetMap}.
+\newblock \url{https://youtu.be/_ConuKUOXH4}, 2016.
+\newblock [Online; accessed 15-August-2016].
+
+\bibitem{wang2015improved}
+Yujie Wang, Xiaoping Hu, Junxiang Lian, Lilian Zhang, and Xianglong Kong.
+\newblock Improved seq slam for real-time place recognition and navigation
+  error correction.
+\newblock In {\em Intelligent Human-Machine Systems and Cybernetics (IHMSC),
+  2015 7th International Conference on}, volume~1, pages 260--264. IEEE, 2015.
+
+\bibitem{cnnPlaces365Github}
+Bolei Zhou.
+\newblock {The Places365-CNNs}.
+\newblock \url{https://github.com/metalbubble/places365}, 2016.
+\newblock [Online; accessed 15-August-2016].
+
+\bibitem{zhou2014learning}
+Bolei Zhou, Agata Lapedriza, Jianxiong Xiao, Antonio Torralba, and Aude Oliva.
+\newblock {Learning deep features for scene recognition using places database}.
+\newblock In {\em Advances in neural information processing systems}, pages
+  487--495, 2014.
+
+\end{thebibliography}
