@@ -55,7 +55,7 @@ The filtered image labels of the reference database are used to segment the data
 
 \subsection{Place Recognition}
 \subsubsection{SeqSLAM}
-SeqSLAM \cite{Milford2012} is a place recognition method known to work remarkably well in challenging environmental conditions. The recent advanced methods \cite{milford2015sequence}, \cite{wang2015improved}, \cite{milford2015place} etc. based on vanilla SeqSLAM further improve the state-of-the-art for place recognition. In this paper, we use the vanilla approach to show the performance improvement using semantic scene information. The detailed methodology of SeqSLAM can be referred to in \cite{Milford2012} and is briefly explained here. The method uses Sum of Absolute Difference (SAD) scores between preprocessed reference and query images. The preprocessing step involves down-sampling of image to $32\mathbf{x}32$ size and patch normalizing the images with a fixed window size $P$. The SAD matrix formed between the reference and query database undergoes contrast enhancement for each query image. The contrast enhancement refers to the normalization of SAD scores within a sliding window of size $R$. The contrast enhanced SAD matrix is then searched for image sequence trajectories of size $D$ within a limited range of velocities originating from each of the reference image. The sequence trajectory with best SAD score is then selected using a trajectory uniqueness threshold $\mu$.
+SeqSLAM \cite{Milford2012} is a place recognition method known to work remarkably well in challenging environmental conditions. The recent advanced methods \cite{milford2015sequence}, \cite{wang2015improved}, \cite{milford2015place} etc. based on vanilla SeqSLAM further improve the state-of-the-art for place recognition. In this paper, we use the vanilla approach to show the performance improvement using semantic scene information. The detailed methodology of SeqSLAM can be referred to in \cite{Milford2012} and is briefly explained here. The method uses Sum of Absolute Difference (SAD) scores between preprocessed reference and query images. The preprocessing step involves down-sampling of image to $32\mathbf{x}32$ size and patch normalizing the images with a fixed window size $P$. The SAD matrix formed between the reference and query database undergoes contrast enhancement for each query image. The contrast enhancement refers to the normalization of SAD scores within a sliding window of size $R$. The contrast enhanced SAD matrix is then searched for image sequence trajectories of size $D_s$ within a limited range of velocities originating from each of the reference image. The sequence trajectory with best SAD score is then selected using a trajectory uniqueness threshold $\mu$.
 
 \subsubsection{Segmented Region Normalization}
 The contrast enhancement step in SeqSLAM uses an arbitrary window size for locally normalizing the matching scores as described above. We use the segmented regions of the dataset to set the normalization window of each query image. The label associated with the query image is used to identify the matching regions of dataset where the normalization is performed with window size equivalent to the size of the matching region. The unmatched regions use the vanilla method of contrast enhancement.
@@ -74,6 +74,32 @@ The Campus Indoor Outdoor dataset comprises of two videos with repeated traversa
 
 \subsubsection{Ground Truth}
 The place recognition ground truth for both the datasets is generated manually for intermittent frames and then interpolated for rest of the image sequence. A query image is considered to be a true positive match for the reference image if its index lies within a range of 5 image frames from the ground truth index.
+
+\subsubsection{SeqSLAM parameters}
+The parameters for SeqSLAM used for all the experiments are shown in Table \ref{table:seqSLAMParams}.
+
+\begin{table}[!htbp]
+ \begin{tabular}{|c|p{4cm}|p{2.5cm}|}
+ \hline
+  $S$ & Image Down-sampling Size & 32x32 \\
+  \hline
+  $P$ & Patch Normalization Window Size & {2,4,8,16} \\
+  \hline
+  $O$ & Image Matching Offset Range & $\pm10$ \\
+  \hline
+  $D_s$ & Sequence Length & 10 \\
+  \hline
+  $R$ & Contrast Enhancement Window Size & {10,20,40,80,160} \\
+  \hline
+  $V$ & Sequence Search Velocity Range & $1\pm0.4$ \\
+  \hline
+  $\mu$ & Trajectory Uniqueness Threshold & Varied from 0 to 255 \\
+ \hline
+ \end{tabular}
+\caption{SeqSLAM parameters.}
+\label{table:seqSLAMParams}
+\end{table}
+
 
 \section{Results}
 The place recognition performance is measured using maximum F1 Score by varying the trajectory uniqueness parameter (described in \cite{Milford2012}), that is, the threshold for deciding a correctly matched place. We also varied two of the parameters of SeqSLAM method that are known to affect the performance, in order to understand the performance changes by using the proposed approach. The performance improvement is as shown in Figure \ref{fig:performanceChart} and the effect of parameters is discussed in subsequent section. 
