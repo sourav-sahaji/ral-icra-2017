@@ -4,13 +4,16 @@
 \usepackage{color}
 \graphicspath{{./images/}}
 
-\title{Recognizing places under appearance changes along the route using semantic labels}
+\title{Improving Condition- and Environment-Invariant Place Recognition with Semantic Place Categorization}
 \author{Author}
 
 
 \begin{document}
 
 \maketitle
+
+\section{Abstract}
+The problem of place recognition actually comprises two distinct subproblems; "ordinary" place recognition which is recognizing a specific location in the world, and place "categorization", which involves recognizing the type of place. Both components of place recognition are competencies for robotic navigation systems and hence have each in isolation received significant attention in the robotics and computer vision community. In this paper, we leverage the powerful complementary nature of the place recognition and place categorization processes to create a new state-of-the-art ordinary place recognition system that uses place context to inform place recognition. We show that semantic place categorization creates a more informative natural segmenting of physical space than the blindly applied fixed segmentation used in algorithms such as SeqSLAM, which enables significantly better place recognition performance. In particular, where existing condition-invariant algorithms enable robustness to globally consistent change (such as day to night cycles), this new semantically informed approach adds robustness to significant changes within the environment, such as transitioning from indoor to outdoor environments. We perform a number of experiments using benchmark and new datasets and show that semantically-informed place recognition outperforms the previous state of the art systems. Like it does for object recognition [ref Niko IROS2015], we believe that  semantics can play a key role in boosting conventional place recognition and navigation performance for robotic systems.
 
 \section{Introduction}
 
