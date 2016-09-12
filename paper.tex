@@ -146,17 +146,10 @@ This parameter is used to set the window size for locally enhancing the contrast
 The images used for finding SAD score are preprocessed by down-sampling them to the size of $32\mathbf{x}32$ and patch normalizing them in order to counter the change in appearance of their matching counterparts. Depending on the type of environment and corresponding imagery, the patch normalization window size can give different performance, but a higher value is usually recommended. In the experiments conducted here, we found that patch normalization window size of 4 and 8 for the given down-sampling image size gives a better performance.
 
 \begin{figure*}[!htbp]
- \begin{tabular*}{\textwidth}{cc}
- \includegraphics[scale=0.5,trim={4cm 0cm 5cm 0cm},clip]{fig-cta-rail-max-fscore-varyP-varyRw-without} &
- \includegraphics[scale=0.5,trim={5cm 0cm 4cm 0cm},clip]{fig-cta-rail-max-fscore-varyP-varyRw-with} \\
- (a) SeqSLAM & (b) Proposed Approach \\
- \multicolumn{2}{c}{CTA-Rail Dataset} \\
- \includegraphics[scale=0.5,trim={4cm 0cm 5cm 0cm},clip]{fig-indoor-outdoor-max-fscore-varyP-varyRw-without} &
- \includegraphics[scale=0.5,trim={5cm 0cm 4cm 0cm},clip]{fig-indoor-outdoor-max-fscore-varyP-varyRw-with} \\
- (c) SeqSLAM & (d) Proposed Approach \\
- \multicolumn{2}{c}{Campus Indoor-Outdoor}
- \end{tabular*}
- \caption{Performance chart showing maximum F1 Score. The first row corresponds to the CTA-Rail dataset and second row for Campus Indoor-Outdoor dataset. The left column shows performance w.r.t. to vanilla SeqSLAM method and right column shows the results for proposed approach.}
+\centering
+ \includegraphics[scale=0.4]{cta-bar-graph} \\
+ \includegraphics[scale=0.4]{campus-io-bar-graph}
+ \caption{Performance chart showing maximum F1 Score. The first row corresponds to the CTA-Rail dataset and second row to the Campus Indoor-Outdoor dataset. The performance improves with increasing the parameter value R, where vanilla SeqSLAM performs equally good as the proposed approach. The patch normlization Size (P) parameter with value 4 tends to give maximum score as compared to others.}
  \label{fig:performanceChart}
 \end{figure*}
 
