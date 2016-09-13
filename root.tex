@@ -62,7 +62,14 @@ The problem of place recognition actually comprises two distinct subproblems; "o
 \section{Related Work}
 
 \section{Proposed Method}
-The proposed approach has two main components: place categorization and place recognition. We use CNN model VGG16-places365 \cite{cnnPlaces365Github} pre-trained on Places365 database \cite{zhou2014learning} for labeling reference and query database images as indoor or outdoor. The place recognition is done using SeqSLAM \cite{Milford2012} and appropriate normalization of image matching scores with help of semantic image labels.
+The proposed approach has two main components: place categorization and place recognition as depicted in Fig. \ref{fig:flowchart}, with semantic information flowing from the former to the latter to generate the final outcome. The semantic labels divide the physical space into different regions based on its appearance, that is, scene attributes. These segmented regions are then used for improving the place recognition scores . We use CNN model VGG16-places365 \cite{cnnPlaces365Github} pre-trained on Places365 database \cite{zhou2014learning} for labeling reference and query database images as indoor or outdoor. The place recognition is done using SeqSLAM \cite{Milford2012} and appropriate normalization of image matching scores with help of semantic image labels.
+
+\begin{figure}
+ \includegraphics[clip, trim=1cm 5cm 0cm 2cm,scale=0.3]{flowchart}
+ \caption{A block diagram showing flow of semantic information from the place categorization module to the place recognition module to generate the final outcome.}
+ \label{fig:flowchart}
+\end{figure}
+
 
 \subsection{Place Categorization}
 
@@ -86,18 +93,16 @@ The pre-trained CNN model classifies an image with probabilities associated with
  \label{fig:labelledImages}
 \end{figure*}
 
-The images are labeled for the entire reference and query database. These labels are then filtered using a sliding window approach over the entire image sequence. The label of an image frame is replaced by the mode of image labels in the window centered at it. Figure \ref{fig:datasetLabels} shows the final labels for reference and query database for one of the datasets used in this paper. These semantic labels show the corresponding matching environments. Though the dataset start and end point is fixed and same in both the traversals, the difference in speed of vehicle prevents perfect alignment of labels in the figure.
-
-% This image has type 3 fonts
-% \begin{figure}[!htbp]
-%  \includegraphics[scale=0.45]{cta-rail-imageLabels}
-%  \caption{Image Labels for reference and query database of CTA Rail dataset after post-processing of raw semantic labels.}
-%  \label{fig:datasetLabels}
-% \end{figure}
-
+The images are labeled for the entire reference and query database. These labels are then filtered using a sliding window approach over the entire image sequence. The label of an image frame is replaced by the mode of image labels in the window centered at it.
 
 \subsubsection{Dataset Segmentation}
 The filtered image labels of the reference database are used to segment the database into different chunks. These chunks represent the variation in appearance of the environment while traversing the route. For example, a train running underground as opposed to over ground will have different appearance of its environment. Similarly, a person walking indoor or outdoor of a campus will witness different surrounding environment as shown in figure\ref{fig:labelledImages}. This variation is therefore captured using the semantic labels of images and segmenting the image sequence into different regions. The segmented regions for one of the datasets used in this paper is shown in Figure \ref{fig:datasetLabels} for both reference and query database.
+
+\begin{figure}[!htbp]
+ \includegraphics[clip, trim=2cm 4cm 2cm 4cm,scale=0.35]{cta-dataset-segmentation-1}
+ \caption{The time-line of CTA-Rail dataset with semantically labeled images at the transition points of segmented reference database. Time-line created using \cite{timelineRWT}}
+ \label{fig:datasetLabels}
+\end{figure}
 
 \subsection{Place Recognition}
 \subsubsection{SeqSLAM}
@@ -113,7 +118,14 @@ The experiments are performed using two datasets described in subsequent section
 The two datasets used in the experiments have instances of different environmental appearances as the route is traversed.
 
 \subsubsection{CTA-Rail}
-The CTA-Rail (Chicago Transit Authority) dataset comprises of two videos traversing a 23 km railway route (Blue Line to O'Hare) recorded once in 2014 \cite{ctaRail2014} and then in 2015 \cite{ctaRail2015} available online. The video comprises of scenes from train stations platforms, subway station platforms, subway tunnels, railroad tracks within highways and urban areas. The entire video sequence captured at a high frame-rate is used for current experiments processing every 200th frame. The resultant reference and query database has 656 and 738 image frames respectively.
+The CTA-Rail (Chicago Transit Authority) dataset (Fig. \ref{fig:ctaTraj}) comprises of two videos traversing a 23 km railway route (Blue Line to O'Hare) recorded once in 2014 \cite{ctaRail2014} and then in 2015 \cite{ctaRail2015} available online. The video comprises of scenes from train stations platforms, subway station platforms, subway tunnels, railroad tracks within highways and urban areas. The entire video sequence captured at a high frame-rate is used for current experiments processing every 200th frame. The resultant reference and query databases have 656 and 738 image frames respectively.
+
+\begin{figure}
+ \includegraphics[scale=0.25]{cta-datasetTrajSampleImages}
+ \caption{CTA Dataset Trajectory Aerial View with sample images. Marked Trajectory Source - \cite{ctaTrajGMap}}
+ \label{fig:ctaTraj}
+\end{figure}
+
 
 \subsubsection{Campus Indoor Outdoor}
 The Campus Indoor Outdoor dataset comprises of two videos with repeated traversal of campus from outside lawn to inside corridor \cite{indoorOutdoor1,indoorOutdoor2}. The videos are recorded using a hand-held device and has jerky motion with huge motion blur. The raw videos are cropped to remove the comments at the bottom and an overlaid navigation display on the right side. The videos are also snipped from beginning so that the starting point is aligned in both the sequences. The dataset therefore comprises of scenes from outside the campus with trees, grass and field road, and from inside the campus traversing through entrance hall, staircase, lobby and corridor. The reference and query database is processed by using every 10th image and therefore uses 355 and 300 frames respectively.
@@ -191,8 +203,15 @@ Figure \ref{fig:sadMat} shows the ground truth and the place recognition matches
 
 \section{Discussion}
 \subsection{Effect of SeqSLAM parameters}
-\subsubsection{Contrast Enhancement Window Size ($R$)}
-This parameter is used to set the window size for locally enhancing the contrast of the match scores, that is, normalizing the score values in a local window. As shown in Figure \ref{fig:performanceChart}, for vanilla SeqSLAM method, the performance improves with increasing the value of this parameter. This is also expected because normalizing over a larger image sequence balances the overall variation in scores, but it leads to suppressing of place recognition corresponding to images which have low matching scores. On the other hand, using segmented regions to set the window size, effectively enhances the contrast of matching scores in appropriate regions and yields correct matching pairs. The performance is, therefore, most of the times better than the best achieved using vanilla approach. Moreover, setting the window size large is not appropriate for large datasets and long time navigation.
+\subsubsection{Sequence Normalization Zone Width ($R$)}
+This parameter is used to set the window size for locally enhancing the contrast of the match scores, that is, normalizing the score values in a local window. As shown in Figure \ref{fig:performanceChart}, for vanilla SeqSLAM method, the performance improves with increasing the value of this parameter. This is also expected because normalizing over a larger image sequence balances the overall variation in scores, but it leads to suppressing of place recognition corresponding to images which have low matching scores. On the other hand, using segmented regions to set the window size, effectively enhances the contrast of matching scores in appropriate regions and yields correct matching pairs. The performance is, therefore, most of the times better than the best achieved using vanilla approach. Moreover, setting the window size large is not appropriate for large datasets and long time navigation. Fig. \ref{fig:RPerformance} shows a performance comparison for both the datasets with respect to the parameter $R$.
+
+\begin{figure}
+ \includegraphics[scale=0.4]{RPerformance}
+ \caption{Performance comparison of proposed method and vanilla SeqSLAM with respect to parameter $R$ for CTA and Campus datasets.}
+ \label{fig:RPerformance}
+\end{figure}
+
 
 \subsubsection{Patch Normalization Window Size ($P$)}
 The images used for finding SAD score are preprocessed by down-sampling them to the size of $32\mathbf{x}32$ and patch normalizing them in order to counter the change in appearance of their matching counterparts. Depending on the type of environment and corresponding imagery, the patch normalization window size can give different performance, but a higher value is usually recommended. In the experiments conducted here, we found that patch normalization window size of 4 and 8 for the given down-sampling image size gives a better performance.

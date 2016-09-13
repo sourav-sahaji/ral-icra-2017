@@ -33,6 +33,11 @@ M.~J. Milford and G.~F. Wyeth, ``{SeqSLAM: Visual route-based navigation for
   sunny summer days and stormy winter nights},'' \emph{Proceedings - IEEE
   International Conference on Robotics and Automation}, pp. 1643--1649, 2012.
 
+\bibitem{timelineRWT}
+ReadWriteThink, ``{ReadWriteThink - http://www.readwritethink.org/},''
+  \url{http://www.readwritethink.org/files/resources/interactives/timeline_2/},
+  2016, [Online; accessed 15-August-2016].
+
 \bibitem{milford2015sequence}
 M.~Milford, C.~Shen, S.~Lowry, N.~Suenderhauf, S.~Shirazi, G.~Lin, F.~Liu,
   E.~Pepperell, C.~Lerma, B.~Upcroft, \emph{et~al.}, ``Sequence searching with
@@ -59,6 +64,11 @@ CTAConnections, ``{CTA Ride the Rails: Blue Line to O'Hare in Real Time},''
 \bibitem{ctaRail2015}
 ------, ``{CTA Ride the Rails: Blue Line to O'Hare in Real Time (2015)},''
   \url{https://youtu.be/Kw_BbQoDv8o}, 2015, [Online; accessed 15-August-2016].
+
+\bibitem{ctaTrajGMap}
+G.~Maps, ``{Google Maps: Directions from Forest Park, IL, USA to O'Hare
+  International Airport, IL, USA},'' \url{https://goo.gl/maps/fX6aSDMnJpC2},
+  2016, [Online; accessed 15-August-2016].
 
 \bibitem{indoorOutdoor1}
 RoboticsAtHsUlm, ``{Seamless Indoor and Outdoor Navigation based on
