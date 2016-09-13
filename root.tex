@@ -1,21 +1,63 @@
-\documentclass[twocolumn]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+%\usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+%\usepackage{amsmath} % assumes amsmath package installed
+%\usepackage{amssymb}  % assumes amsmath package installed
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{color}
 \graphicspath{{./images/}}
 
-\title{Improving Condition- and Environment-Invariant Place Recognition with Semantic Place Categorization}
-\author{Author}
+\title{\LARGE \bf
+Improving Condition- and Environment-Invariant Place Recognition with Semantic Place Categorization
+}
+
+\author{Albert Author$^{1}$ and Bernard D. Researcher$^{2}$% <-this % stops a space
+\thanks{*This work was not supported by any organization}% <-this % stops a space
+\thanks{$^{1}$Albert Author is with Faculty of Electrical Engineering, Mathematics and Computer Science,
+        University of Twente, 7500 AE Enschede, The Netherlands
+        {\tt\small albert.author@papercept.net}}%
+\thanks{$^{2}$Bernard D. Researcheris with the Department of Electrical Engineering, Wright State University,
+        Dayton, OH 45435, USA
+        {\tt\small b.d.researcher@ieee.org}}%
+}
 
 
 \begin{document}
 
+
+
 \maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
 
-\section{Abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
 The problem of place recognition actually comprises two distinct subproblems; "ordinary" place recognition which is recognizing a specific location in the world, and place "categorization", which involves recognizing the type of place. Both components of place recognition are competencies for robotic navigation systems and hence have each in isolation received significant attention in the robotics and computer vision community. In this paper, we leverage the powerful complementary nature of the place recognition and place categorization processes to create a new state-of-the-art ordinary place recognition system that uses place context to inform place recognition. We show that semantic place categorization creates a more informative natural segmenting of physical space than the blindly applied fixed segmentation used in algorithms such as SeqSLAM, which enables significantly better place recognition performance. In particular, where existing condition-invariant algorithms enable robustness to globally consistent change (such as day to night cycles), this new semantically informed approach adds robustness to significant changes within the environment, such as transitioning from indoor to outdoor environments. We perform a number of experiments using benchmark and new datasets and show that semantically-informed place recognition outperforms the previous state of the art systems. Like it does for object recognition [ref Niko IROS2015], we believe that  semantics can play a key role in boosting conventional place recognition and navigation performance for robotic systems.
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{INTRODUCTION}
 
 \section{Related Work}
 
@@ -46,11 +88,12 @@ The pre-trained CNN model classifies an image with probabilities associated with
 
 The images are labeled for the entire reference and query database. These labels are then filtered using a sliding window approach over the entire image sequence. The label of an image frame is replaced by the mode of image labels in the window centered at it. Figure \ref{fig:datasetLabels} shows the final labels for reference and query database for one of the datasets used in this paper. These semantic labels show the corresponding matching environments. Though the dataset start and end point is fixed and same in both the traversals, the difference in speed of vehicle prevents perfect alignment of labels in the figure.
 
-\begin{figure}[!htbp]
- \includegraphics[scale=0.45]{cta-rail-imageLabels}
- \caption{Image Labels for reference and query database of CTA Rail dataset after post-processing of raw semantic labels.}
- \label{fig:datasetLabels}
-\end{figure}
+% This image has type 3 fonts
+% \begin{figure}[!htbp]
+%  \includegraphics[scale=0.45]{cta-rail-imageLabels}
+%  \caption{Image Labels for reference and query database of CTA Rail dataset after post-processing of raw semantic labels.}
+%  \label{fig:datasetLabels}
+% \end{figure}
 
 
 \subsubsection{Dataset Segmentation}
@@ -70,7 +113,7 @@ The experiments are performed using two datasets described in subsequent section
 The two datasets used in the experiments have instances of different environmental appearances as the route is traversed.
 
 \subsubsection{CTA-Rail}
-The CTA-Rail (Chicago Transit Authority) dataset comprises of two videos traversing a 23 km railway route (Blue Line to O'Hare) recorded once in 2014\cite {ctaRail2014} and then in 2015 \cite{ctaRail2015} available online. The video comprises of scenes from train stations platforms, subway station platforms, subway tunnels, railroad tracks within highways and urban areas. The entire video sequence captured at a high frame-rate is used for current experiments processing every 200th frame. The resultant reference and query database has 656 and 738 image frames respectively.
+The CTA-Rail (Chicago Transit Authority) dataset comprises of two videos traversing a 23 km railway route (Blue Line to O'Hare) recorded once in 2014 \cite{ctaRail2014} and then in 2015 \cite{ctaRail2015} available online. The video comprises of scenes from train stations platforms, subway station platforms, subway tunnels, railroad tracks within highways and urban areas. The entire video sequence captured at a high frame-rate is used for current experiments processing every 200th frame. The resultant reference and query database has 656 and 738 image frames respectively.
 
 \subsubsection{Campus Indoor Outdoor}
 The Campus Indoor Outdoor dataset comprises of two videos with repeated traversal of campus from outside lawn to inside corridor \cite{indoorOutdoor1,indoorOutdoor2}. The videos are recorded using a hand-held device and has jerky motion with huge motion blur. The raw videos are cropped to remove the comments at the bottom and an overlaid navigation display on the right side. The videos are also snipped from beginning so that the starting point is aligned in both the sequences. The dataset therefore comprises of scenes from outside the campus with trees, grass and field road, and from inside the campus traversing through entrance hall, staircase, lobby and corridor. The reference and query database is processed by using every 10th image and therefore uses 355 and 300 frames respectively.
@@ -82,6 +125,7 @@ The place recognition ground truth for both the datasets is generated manually f
 The parameters for SeqSLAM used for all the experiments are shown in Table \ref{table:seqSLAMParams}.
 
 \begin{table}[!htbp]
+\caption{SeqSLAM parameters.}
  \begin{tabular}{|c|p{4cm}|p{2.5cm}|}
  \hline
   $S$ & Image Down-sampling Size & 32x32 \\
@@ -99,20 +143,28 @@ The parameters for SeqSLAM used for all the experiments are shown in Table \ref{
   $\mu$ & Trajectory Uniqueness Threshold & Varied from 0 to 255 \\
  \hline
  \end{tabular}
-\caption{SeqSLAM parameters.}
 \label{table:seqSLAMParams}
 \end{table}
 
-
 \section{Results}
 The place recognition performance is measured using maximum F1 Score by varying the trajectory uniqueness parameter (described in \cite{Milford2012}), that is, the threshold for deciding a correctly matched place. We also varied two of the parameters of SeqSLAM method that are known to affect the performance, in order to understand the performance changes by using the proposed approach. The performance improvement is as shown in Figure \ref{fig:performanceChart} and the effect of parameters is discussed in subsequent section. 
-\\
+
+\begin{figure*}[t]
+\centering
+\begin{tabular}[t]{c}
+\includegraphics[scale=0.5]{cta-bar-graph}\\
+\includegraphics[scale=0.5]{campus-io-bar-graph}
+\end{tabular}
+ \caption{Performance chart showing maximum F1 Score. The first row corresponds to the CTA-Rail dataset and second row to the Campus Indoor-Outdoor dataset. The performance improves with increasing the parameter value R, where vanilla SeqSLAM performs equally good as the proposed approach. The patch normlization Size (P) parameter with value 4 tends to give maximum score as compared to others.}
+ \label{fig:performanceChart}
+\end{figure*}
+
 Figure \ref{fig:sadMat} shows the ground truth and the place recognition matches (without thresholding) corresponding to different parameter settings for both vanilla SeqSLAM and proposed method. The results in first row correspond to Campus Indoor-Outdoor dataset and second row to CTA Rail dataset. The performance improvement is large for both the datasets for smaller values of $R$ (contrast enhancement window size). The large $R$ values help the vanilla method to attain performance equivalent to the proposed approach as shown in Figure \ref{fig:sadMat}. The effect of dataset segmentation can be easily seen and understood in the result images in form of rectangular dark and light patches in the SAD matrix. 
 
-\newcommand{\imgH}{5cm}
+\newcommand{\imgH}{3cm}
 \newcommand{\imgW}{4cm}
-\begin{figure*}[!htbp]
- \begin{tabular*}{\textwidth}{cccc}
+\begin{figure*}[!h]
+ \begin{tabular*}{\textwidth}[t]{cccc}
   \includegraphics[width=\imgW,height=\imgH]{campus-io-without-bad-101} &
   \includegraphics[width=\imgW,height=\imgH]{campus-io-with-bad-71} &
   \includegraphics[width=\imgW,height=\imgH]{campus-io-without-good-105} &
@@ -145,17 +197,20 @@ This parameter is used to set the window size for locally enhancing the contrast
 \subsubsection{Patch Normalization Window Size ($P$)}
 The images used for finding SAD score are preprocessed by down-sampling them to the size of $32\mathbf{x}32$ and patch normalizing them in order to counter the change in appearance of their matching counterparts. Depending on the type of environment and corresponding imagery, the patch normalization window size can give different performance, but a higher value is usually recommended. In the experiments conducted here, we found that patch normalization window size of 4 and 8 for the given down-sampling image size gives a better performance.
 
-\begin{figure*}[!htbp]
-\centering
- \includegraphics[scale=0.4]{cta-bar-graph} \\
- \includegraphics[scale=0.4]{campus-io-bar-graph}
- \caption{Performance chart showing maximum F1 Score. The first row corresponds to the CTA-Rail dataset and second row to the Campus Indoor-Outdoor dataset. The performance improves with increasing the parameter value R, where vanilla SeqSLAM performs equally good as the proposed approach. The patch normlization Size (P) parameter with value 4 tends to give maximum score as compared to others.}
- \label{fig:performanceChart}
-\end{figure*}
-
 \section{Conclusion}
 
-\bibliography{ral-icra-2017}
-\bibliographystyle{plain}
+\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
+                                  % on the last page of the document manually. It shortens
+                                  % the textheight of the last page by a suitable amount.
+                                  % This command does not take effect until the next page
+                                  % so it should come on the page before the last. Make
+                                  % sure that you do not shorten the textheight too much.
+
+\section*{ACKNOWLEDGMENT}
+
+The preferred spelling of the word ÒacknowledgmentÓ in America is without an ÒeÓ after the ÒgÓ. Avoid the stilted expression, ÒOne of us (R. B. G.) thanks . . .Ó  Instead, try ÒR. B. G. thanksÓ. Put sponsor acknowledgments in the unnumbered footnote on the first page.
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,ral-icra-2017}
 
 \end{document}
