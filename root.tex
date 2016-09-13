@@ -19,7 +19,7 @@
 %\usepackage{epsfig} % for postscript graphics files
 %\usepackage{mathptmx} % assumes new font selection scheme installed
 %\usepackage{times} % assumes new font selection scheme installed
-%\usepackage{amsmath} % assumes amsmath package installed
+\usepackage{amsmath} % assumes amsmath package installed
 %\usepackage{amssymb}  % assumes amsmath package installed
 \usepackage{url}
 \usepackage{graphicx}
@@ -62,18 +62,22 @@ The problem of place recognition actually comprises two distinct subproblems; "o
 \section{Related Work}
 
 \section{Proposed Method}
-The proposed approach has two main components: place categorization and place recognition as depicted in Fig. \ref{fig:flowchart}, with semantic information flowing from the former to the latter to generate the final outcome. The semantic labels divide the physical space into different regions based on its appearance, that is, scene attributes. These segmented regions are then used for improving the place recognition scores . We use CNN model VGG16-places365 \cite{cnnPlaces365Github} pre-trained on Places365 database \cite{zhou2014learning} for labeling reference and query database images as indoor or outdoor. The place recognition is done using SeqSLAM \cite{Milford2012} and appropriate normalization of image matching scores with help of semantic image labels.
+The proposed approach has two main components: place categorization and place recognition as depicted in Fig. \ref{fig:flowchart}, with semantic information flowing from the former to the latter to generate the final outcome. The semantic labels divide the physical space into different regions based on its appearance, that is, scene attributes. These segmented regions are then used for improving the place recognition performance. We use CNN model VGG16-places365 \cite{cnnPlaces365Github} pre-trained on Places365 database \cite{zhou2014learning} for labeling reference and query database images as indoor or outdoor along with scene attributes \cite{Patterson2012SunAttributes} prediction. We use SeqSLAM \cite{Milford2012} for showing improved place recognition using semantic information by appropriately enhancing the image matching scores.
 
 \begin{figure}
  \includegraphics[clip, trim=1cm 5cm 0cm 2cm,scale=0.3]{flowchart}
- \caption{A block diagram showing flow of semantic information from the place categorization module to the place recognition module to generate the final outcome.}
+ \caption{A block diagram showing flow of semantic information from the place categorization module to the place recognition module for generating the final outcome.}
  \label{fig:flowchart}
 \end{figure}
 
 
 \subsection{Place Categorization}
 
-The pre-trained CNN model classifies an image with probabilities associated with each of the 365 place categories. 205 of these place categories also have binary labels classifying an image as indoor or outdoor. We added the indoor/outdoor labels for rest of the 160 place categories. We use top-5 most probable predictions from the pre-trained model to calculate a weighted score for labeling an image as indoor or outdoor. Figure \ref{fig:labelledImages} shows images with indoor/outdoor label, top predicted place label and its associated probability.
+\subsubsection{Image Classification}
+
+% The pre-trained CNN model classifies an image with probabilities associated with each of the 365 place categories. 205 of these place categories also have binary labels classifying an image as indoor or outdoor. We added the indoor/outdoor labels for rest of the 160 place categories. We use top-5 most probable predictions from the pre-trained model to calculate a weighted score for labeling an image as indoor or outdoor. Figure \ref{fig:labelledImages} shows images with indoor/outdoor label, top predicted place label and its associated probability.
+
+The pre-trained CNN model classifies an image with probabilities associated with each of the 365 place categories. It also predicts the most probable scene attributes (out of 102 attributes trained on SUN database \cite{Patterson2012SunAttributes}) using one of its fully-connected layers. We use the top-5 most probable attribute predictions for post-processing the image labels to semantically segment datasets. The classification is performed on the entire reference and query database. The reference database labels are used for temporally dividing the image sequence into different chunks based on its scene attributes. The query database labels are used later during place recognition for identifying the correct semantic segment of reference database and effectively matching the image sequence.
 
 \newcommand{\scaleVal}{0.28}
 \begin{figure*}[!htbp]
@@ -93,10 +97,24 @@ The pre-trained CNN model classifies an image with probabilities associated with
  \label{fig:labelledImages}
 \end{figure*}
 
-The images are labeled for the entire reference and query database. These labels are then filtered using a sliding window approach over the entire image sequence. The label of an image frame is replaced by the mode of image labels in the window centered at it.
-
 \subsubsection{Dataset Segmentation}
-The filtered image labels of the reference database are used to segment the database into different chunks. These chunks represent the variation in appearance of the environment while traversing the route. For example, a train running underground as opposed to over ground will have different appearance of its environment. Similarly, a person walking indoor or outdoor of a campus will witness different surrounding environment as shown in figure\ref{fig:labelledImages}. This variation is therefore captured using the semantic labels of images and segmenting the image sequence into different regions. The segmented regions for one of the datasets used in this paper is shown in Figure \ref{fig:datasetLabels} for both reference and query database.
+The image labels for reference database obtained from the classifier do not usually exhibit local temporal persistence of their labels. In order to achieve an adequate dataset segmentation, we find temporal connected components in the database. Each image in the database is represented by a node $N_i$ defined as a set containing the top-5 predicted labels and the most probable prediction label $L_i$. A consecutive pair of nodes is considered to be connected if an edge $E_{i,i+1}$ exists between them as per Eq. \ref{eq:connectedComponent}.
+\begin{equation}
+ E_{i,i+1} = 
+ \begin{cases}
+  1, & \text{if } \left\vert{N_i \cap N_{i+1}}\right\vert \geq 3\\
+  0, & \text{otherwise}
+ \end{cases}
+ \label{eq:connectedComponent}
+\end{equation}
+
+The edges between the nodes can be determined by a single pass over the entire image sequence. A new connected component is obtained whenever an edge between consecutive nodes ceases to exist. The most probable prediction label $L_i$ of each node in a connected component is used to find the most frequently occuring label $L'_i$ within that component. This label $L'_i$ is used for representing the connected component as well as each of its nodes. These newly obtained labels are further filtered to get rid of transient errors. We use a sliding window of size $s$ that passes throught the entire image sequence and replaces the label $L'_i$ by the mode of labels in the sliding window as given in Eq. \ref{eq:labelsMode}, where $M(X)$ for a set $X$ gives the statistical mode of the set.
+\begin{equation}
+ \hat{L}_i = M(\bigcup\limits_{i-s/2}^{i+s/2} L'_i)
+ \label{eq:labelsMode}
+\end{equation}
+
+The filtered image labels $\hat{L}_i$ are finally used to segment the database into different chunks which possess a consistent label. These chunks represent the variation in appearance of the environment while traversing the route. For example, a train running underground as opposed to over the ground will have different appearance of its environment. Similarly, a person walking indoor or outdoor of a campus will witness different surrounding environment as shown in figure\ref{fig:labelledImages}. Fig. \ref{fig:datasetLabels} shows the images and their semantic labels at the transition points of one of the segmented datasets used in this paper.
 
 \begin{figure}[!htbp]
  \includegraphics[clip, trim=2cm 4cm 2cm 4cm,scale=0.35]{cta-dataset-segmentation-1}

@@ -28,6 +28,11 @@ B.~Zhou, A.~Lapedriza, J.~Xiao, A.~Torralba, and A.~Oliva, ``{Learning deep
   features for scene recognition using places database},'' in \emph{Advances in
   neural information processing systems}, 2014, pp. 487--495.
 
+\bibitem{Patterson2012SunAttributes}
+G.~Patterson and J.~Hays, ``Sun attribute database: Discovering, annotating,
+  and recognizing scene attributes,'' in \emph{Proceeding of the 25th
+  Conference on Computer Vision and Pattern Recognition (CVPR)}, 2012.
+
 \bibitem{Milford2012}
 M.~J. Milford and G.~F. Wyeth, ``{SeqSLAM: Visual route-based navigation for
   sunny summer days and stormy winter nights},'' \emph{Proceedings - IEEE
