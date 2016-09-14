@@ -18,6 +18,16 @@
 \fi
 #2}}
 
+\bibitem{Cummins2009}
+M.~Cummins and P.~Newman, ``{Highly scalable appearance-only SLAM - FAB-MAP
+  2.0},'' in \emph{Robotics: Science and Systems}, Seattle, United States,
+  2009.
+
+\bibitem{Milford2012}
+M.~J. Milford and G.~F. Wyeth, ``{SeqSLAM: Visual route-based navigation for
+  sunny summer days and stormy winter nights},'' \emph{Proceedings - IEEE
+  International Conference on Robotics and Automation}, pp. 1643--1649, 2012.
+
 \bibitem{cnnPlaces365Github}
 B.~Zhou, ``{The Places365-CNNs},''
   \url{https://github.com/metalbubble/places365}, 2016, [Online; accessed
@@ -33,10 +43,11 @@ G.~Patterson and J.~Hays, ``Sun attribute database: Discovering, annotating,
   and recognizing scene attributes,'' in \emph{Proceeding of the 25th
   Conference on Computer Vision and Pattern Recognition (CVPR)}, 2012.
 
-\bibitem{Milford2012}
-M.~J. Milford and G.~F. Wyeth, ``{SeqSLAM: Visual route-based navigation for
-  sunny summer days and stormy winter nights},'' \emph{Proceedings - IEEE
-  International Conference on Robotics and Automation}, pp. 1643--1649, 2012.
+\bibitem{sunderhauf2016place}
+N.~Sunderhauf, F.~Dayoub, S.~McMahon, B.~Talbot, R.~Schulz, P.~Corke, G.~Wyeth,
+  B.~Upcroft, and M.~Milford, ``Place categorization and semantic mapping on a
+  mobile robot,'' in \emph{Proceedings of the International Conference on
+  Robotics and Automation}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2016.
 
 \bibitem{timelineRWT}
 ReadWriteThink, ``{ReadWriteThink - http://www.readwritethink.org/},''

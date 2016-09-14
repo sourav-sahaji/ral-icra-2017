@@ -24,6 +24,9 @@
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{color}
+
+\usepackage{soul}
+
 \graphicspath{{./images/}}
 
 \title{\LARGE \bf
@@ -52,23 +55,53 @@ Improving Condition- and Environment-Invariant Place Recognition with Semantic P
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-The problem of place recognition actually comprises two distinct subproblems; "ordinary" place recognition which is recognizing a specific location in the world, and place "categorization", which involves recognizing the type of place. Both components of place recognition are competencies for robotic navigation systems and hence have each in isolation received significant attention in the robotics and computer vision community. In this paper, we leverage the powerful complementary nature of the place recognition and place categorization processes to create a new state-of-the-art ordinary place recognition system that uses place context to inform place recognition. We show that semantic place categorization creates a more informative natural segmenting of physical space than the blindly applied fixed segmentation used in algorithms such as SeqSLAM, which enables significantly better place recognition performance. In particular, where existing condition-invariant algorithms enable robustness to globally consistent change (such as day to night cycles), this new semantically informed approach adds robustness to significant changes within the environment, such as transitioning from indoor to outdoor environments. We perform a number of experiments using benchmark and new datasets and show that semantically-informed place recognition outperforms the previous state of the art systems. Like it does for object recognition [ref Niko IROS2015], we believe that  semantics can play a key role in boosting conventional place recognition and navigation performance for robotic systems.
+The problem of place recognition actually comprises two distinct subproblems; ``ordinary'' place recognition which is recognizing a specific location in the world, and place ``categorization'', which involves recognizing the type of place. Both components of place recognition are competencies for robotic navigation systems and hence have each in isolation received significant attention in the robotics and computer vision community. In this paper, we leverage the powerful complementary nature of the place recognition and place categorization processes to create a new state-of-the-art ordinary place recognition system that uses place context to inform place recognition. We show that semantic place categorization creates a more informative natural segmenting of physical space than the blindly applied fixed segmentation used in algorithms such as SeqSLAM, which enables significantly better place recognition performance. In particular, where existing condition-invariant algorithms enable robustness to globally consistent change (such as day to night cycles), this new semantically informed approach adds robustness to significant changes within the environment, such as transitioning from indoor to outdoor environments. We perform a number of experiments using benchmark and new datasets and show that semantically-informed place recognition outperforms the previous state of the art systems. Like it does for object recognition [ref Niko IROS2015], we believe that  semantics can play a key role in boosting conventional place recognition and navigation performance for robotic systems.
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
 
+
+The problem of ``traditional?'' place recognition \hl{(find new word for ordinary)} typically focuses on recognizing specific locations in the world stored within a database of ``places''. This form of place recognition is very powerful, enabling localization on very large scales~\cite{Cummins2009} and during difficult day and night traverses of an environment~\cite{Milford2012}. The problem of place categorization is similar to the place recognition problem, where environments are evaluated to determine the type of place from a database of place types. 
+
+We see the problem of place recognition as an extension to the place categorization problem, where it is possible to use similar frameworks to solve both problems. The place categorization framework has less 'labels' than place recognition and more training examples of what represents a particular place category whereas place recognition has a ``label'' within a database representing every location in the environment. We also highlight difference in application between the two approaches, noting that within place recognition frameworks, the goal is to identify and utilize differences between locations within the dataset to enable unique localization. Place categorization algorithms highlight the similarity between intra-class samples to create a comprehensive representation of a particular place type. 
+
+\begin{figure}
+	\includegraphics[clip, trim=1cm 5cm 0cm 2cm,scale=0.3]{flowchart}
+	\caption{A block diagram showing flow of semantic information from the place categorization module to the place recognition module for generating the final outcome. \hl{May be a good idea to ensure that the figure is inside the margins.}}
+	\label{fig:flowchart}
+\end{figure}
+
+In this work, we combine the two frameworks of place recognition and place categorization to improve place recognition localization performance. Our primary contribution is the utilization of a place categorization framework to inform place recognition place matches (as seen in Fig.~\ref{fig:flowchart}).  We utilize the Convolutional Neural Network (CNN) model VGG16-places365 \cite{cnnPlaces365Github} pre-trained on Places365 database \cite{zhou2014learning} and scene attributes  \cite{Patterson2012SunAttributes} for performing place categorization. Once a place is categorized, we leverage the SeqSLAM framework to perform place recognition, implementing a dynamic weighting scheme biasing place matches with similar place characteristic and place categorization results. 
+
+We evaluate our proposed approach within the two real world datasets, the Campus Dataset and the CTA-Rail Dataset. The Campus Dataset utilizes a single camera traversing the indoors and outdoor campus environments and the CTA-Rail Dataset consists of a single camera mounted to a train traversing of indoor, outdoor scenes with subway station platforms, subway tunnels and railroad tracks. The proposed approach, incorporating place categorization information,  outperforms a standalone state-of-the-art place recognition system in both environments.  
+
+The paper proceeds as follows. In Section 2, we review literature with a focus on place recognition and place categorization. Section 3 presents our approach describing in the implementation of our CNN place categorization framework, outlines our place recognition framework and outlines the proposed fusion technique for combining the place recognition and place categorization results to produced superior place recognition results. In Section 4, we present the experimental setup, and present the results of multiple levels of evaluation in Section 5. Section 6 discusses the significance of the research and discuss areas of future work.
+
 \section{Related Work}
+In this section, we review current research in the areas of place categorization and place recognition. We specifically focus on place recognition, semantic mapping and place categorization frameworks. 
+
+\subsection{Place Recognition}
+Visual place recognition leverages a visual map of the environment and compares visual information, typically from a camera sensor, to the map data to determine the current location of the camera within the map. There are many techniques which have been proposed to solve this problem of determining where an image has been taken within an environment. Typically, these approaches leverage single frame matching to determine the location of the camera in the environment. The key goal of place recognition frameworks is to separate places in the environment and highlight the unique attributes or features which uniquely describe individual locations in the environment \hl{[ref - fabmap, vocabulary trees]}. 
+
+Temporal information has been incorporated into the place recognition framework with the introduction of the SeqSLAM framework, integrating place hypotheses over small distances to accrue evidence and improve place recognition performance. 
+
+
+
+
+\subsection{Place Categorization}
+\cite{sunderhauf2016place}
+
+\hl{Emphasize the generalization capability of categorization over place rec  - Maybe echo earlier. }
+
+\hl{I dont have any background in this. If you have a particular message you want to get across here, let me know and I can try to write something. }
+
 
 \section{Proposed Method}
 The proposed approach has two main components: place categorization and place recognition as depicted in Fig. \ref{fig:flowchart}, with semantic information flowing from the former to the latter to generate the final outcome. The semantic labels divide the physical space into different regions based on its appearance, that is, scene attributes. These segmented regions are then used for improving the place recognition performance. We use CNN model VGG16-places365 \cite{cnnPlaces365Github} pre-trained on Places365 database \cite{zhou2014learning} for labeling reference and query database images as indoor or outdoor along with scene attributes \cite{Patterson2012SunAttributes} prediction. We use SeqSLAM \cite{Milford2012} for showing improved place recognition using semantic information by appropriately enhancing the image matching scores.
 
-\begin{figure}
- \includegraphics[clip, trim=1cm 5cm 0cm 2cm,scale=0.3]{flowchart}
- \caption{A block diagram showing flow of semantic information from the place categorization module to the place recognition module for generating the final outcome.}
- \label{fig:flowchart}
-\end{figure}
+
 
 
 \subsection{Place Categorization}
@@ -118,7 +151,7 @@ The filtered image labels $\hat{L}_i$ are finally used to segment the database i
 
 \begin{figure}[!htbp]
  \includegraphics[clip, trim=2cm 4cm 2cm 4cm,scale=0.35]{cta-dataset-segmentation-1}
- \caption{The time-line of CTA-Rail dataset with semantically labeled images at the transition points of segmented reference database. (Time-line created using \cite{timelineRWT}})
+ \caption{The time-line of CTA-Rail Dataset with semantically labeled images at the transition points of segmented reference database. (Time-line created using \cite{timelineRWT}})
  \label{fig:datasetLabels}
 \end{figure}
 
@@ -146,6 +179,8 @@ The normalization of place matching scores from Eq. \ref{eq:SADscore} within the
 
 \subsubsection{Segmented Region Normalization}
 The score normalization step in SeqSLAM uses an arbitrary window size for locally normalizing the matching scores as given in Eq. \ref{eq:normScore}. We use the segmented regions of the dataset to set the normalization window of each query image. The label associated with the query image is used to identify the matching regions of dataset where the normalization is performed with window size equivalent to the size of the matching region. The unmatched regions use the vanilla method of contrast enhancement.
+
+\hl{This needs a picture, something as simple as 2 confusion matrices or difference vectors, one vanilla seqslam and one weighted version, with some labels. }
 
 \section{Experimental Setup}
 The experiments are performed using two datasets described in subsequent section. The image classification is performed using Dell M4800 Intel Core i7, 3.1 GHz processor with NVIDIA Quadro K2100M graphics card. The place recognition is performed using Dell E7450 Intel Core i7, 2.6 GHz processor. The classification is done as a preprocessing step for reference as well as query database off-line.
@@ -237,14 +272,16 @@ Figure \ref{fig:sadMat} shows the ground truth and the place recognition matches
 \end{figure*}
 
 
-\section{Discussion}
+\section{Discussion and Future Work}
+In this work, we presented a system which combines place categorization information to inform and improve place recognition results. The system was tested in using two real world datasets, highlighting the proposed system's superiority over a naive, state-of-the-art place recognition system. Here, we discuss the effects of system parameters, the improvements achieved by the proposed approach and potential extensions and future work for this approach. 
+
 \subsection{Effect of SeqSLAM parameters}
 \subsubsection{Sequence Normalization Zone Width ($R$)}
 This parameter is used to set the window size for locally enhancing the contrast of the match scores, that is, normalizing the score values in a local window. As shown in Figure \ref{fig:performanceChart}, for vanilla SeqSLAM method, the performance improves with increasing the value of this parameter. This is also expected because normalizing over a larger image sequence balances the overall variation in scores, but it leads to suppressing of place recognition corresponding to images which have low matching scores. On the other hand, using segmented regions to set the window size, effectively enhances the contrast of matching scores in appropriate regions and yields correct matching pairs. The performance is, therefore, most of the times better than the best achieved using vanilla approach. Moreover, setting the window size large is not appropriate for large datasets and long time navigation. Fig. \ref{fig:RPerformance} shows a performance comparison for both the datasets with respect to the parameter $R$.
 
 \begin{figure}
  \includegraphics[scale=0.4]{RPerformance}
- \caption{Performance comparison of proposed method and vanilla SeqSLAM with respect to parameter $R$ for CTA and Campus datasets.}
+ \caption{Performance comparison of proposed method and vanilla SeqSLAM with respect to parameter $R$ for CTA and Campus datasets. \hl{May be a good idea to split this image into two figures as it hard to read. }}
  \label{fig:RPerformance}
 \end{figure}
 
@@ -252,7 +289,19 @@ This parameter is used to set the window size for locally enhancing the contrast
 \subsubsection{Patch Normalization Window Size ($P$)}
 The images used for finding SAD score are preprocessed by down-sampling them to the size of $32\mathbf{x}32$ and patch normalizing them in order to counter the change in appearance of their matching counterparts. Depending on the type of environment and corresponding imagery, the patch normalization window size can give different performance, but a higher value is usually recommended. In the experiments conducted here, we found that patch normalization window size of 4 and 8 for the given down-sampling image size gives a better performance.
 
-\section{Conclusion}
+
+\subsection{Future Work}
+\hl{Investigating spatio-temporal relationship between places with similar visual appearances, dynamically varying the sequence length to improve localization results?
+
+Grid Cells?
+
+3D object proposals to further inform place rec?
+
+Others?}
+
+
+
+%\section{Conclusion}
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
@@ -261,9 +310,9 @@ The images used for finding SAD score are preprocessed by down-sampling them to 
                                   % so it should come on the page before the last. Make
                                   % sure that you do not shorten the textheight too much.
 
-\section*{ACKNOWLEDGMENT}
+%\section*{ACKNOWLEDGMENT}
 
-The preferred spelling of the word ÒacknowledgmentÓ in America is without an ÒeÓ after the ÒgÓ. Avoid the stilted expression, ÒOne of us (R. B. G.) thanks . . .Ó  Instead, try ÒR. B. G. thanksÓ. Put sponsor acknowledgments in the unnumbered footnote on the first page.
+%The preferred spelling of the word ÒacknowledgmentÓ in America is without an ÒeÓ after the ÒgÓ. Avoid the stilted expression, ÒOne of us (R. B. G.) thanks . . .Ó  Instead, try ÒR. B. G. thanksÓ. Put sponsor acknowledgments in the unnumbered footnote on the first page.
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,ral-icra-2017}
