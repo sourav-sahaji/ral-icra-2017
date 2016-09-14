@@ -108,26 +108,44 @@ The image labels for reference database obtained from the classifier do not usua
  \label{eq:connectedComponent}
 \end{equation}
 
-The edges between the nodes can be determined by a single pass over the entire image sequence. A new connected component is obtained whenever an edge between consecutive nodes ceases to exist. The most probable prediction label $L_i$ of each node in a connected component is used to find the most frequently occuring label $L'_i$ within that component. This label $L'_i$ is used for representing the connected component as well as each of its nodes. These newly obtained labels are further filtered to get rid of transient errors. We use a sliding window of size $s$ that passes throught the entire image sequence and replaces the label $L'_i$ by the mode of labels in the sliding window as given in Eq. \ref{eq:labelsMode}, where $M(X)$ for a set $X$ gives the statistical mode of the set.
+The edges between the nodes can be determined by a single pass over the entire image sequence. A new connected component is obtained whenever an edge between consecutive nodes ceases to exist. The most probable prediction label $L_i$ of each node in a connected component is used to find the most frequently occurring label $L'_i$ within that component. This label $L'_i$ is used for representing the connected component as well as each of its nodes. These newly obtained labels are further filtered to get rid of transient errors. We use a sliding window of size $s$ that passes through the entire image sequence and replaces the label $L'_i$ by the mode of labels in the sliding window as given in Eq. \ref{eq:labelsMode}, where $M(X)$ for a set $X$ gives the statistical mode of the set.
 \begin{equation}
  \hat{L}_i = M(\bigcup\limits_{i-s/2}^{i+s/2} L'_i)
  \label{eq:labelsMode}
 \end{equation}
 
-The filtered image labels $\hat{L}_i$ are finally used to segment the database into different chunks which possess a consistent label. These chunks represent the variation in appearance of the environment while traversing the route. For example, a train running underground as opposed to over the ground will have different appearance of its environment. Similarly, a person walking indoor or outdoor of a campus will witness different surrounding environment as shown in figure\ref{fig:labelledImages}. Fig. \ref{fig:datasetLabels} shows the images and their semantic labels at the transition points of one of the segmented datasets used in this paper.
+The filtered image labels $\hat{L}_i$ are finally used to segment the database into different chunks. These chunks represent the variation in appearance of the environment while traversing the route. For example, a train running underground as opposed to over the ground will have different appearance of its environment. Similarly, a person walking indoor or outdoor of a campus will witness different surrounding environment as shown in Fig. \ref{fig:labelledImages}. Fig. \ref{fig:datasetLabels} shows the images and their semantic labels at the segmentation transition points for one of the datasets used in this paper.
 
 \begin{figure}[!htbp]
  \includegraphics[clip, trim=2cm 4cm 2cm 4cm,scale=0.35]{cta-dataset-segmentation-1}
- \caption{The time-line of CTA-Rail dataset with semantically labeled images at the transition points of segmented reference database. Time-line created using \cite{timelineRWT}}
+ \caption{The time-line of CTA-Rail dataset with semantically labeled images at the transition points of segmented reference database. (Time-line created using \cite{timelineRWT}})
  \label{fig:datasetLabels}
 \end{figure}
 
 \subsection{Place Recognition}
-\subsubsection{SeqSLAM}
-SeqSLAM \cite{Milford2012} is a place recognition method known to work remarkably well in challenging environmental conditions. The recent advanced methods \cite{milford2015sequence}, \cite{wang2015improved}, \cite{milford2015place} etc. based on vanilla SeqSLAM further improve the state-of-the-art for place recognition. In this paper, we use the vanilla approach to show the performance improvement using semantic scene information. The detailed methodology of SeqSLAM can be referred to in \cite{Milford2012} and is briefly explained here. The method uses Sum of Absolute Difference (SAD) scores between preprocessed reference and query images. The preprocessing step involves down-sampling of image to $32\mathbf{x}32$ size and patch normalizing the images with a fixed window size $P$. The SAD matrix formed between the reference and query database undergoes contrast enhancement for each query image. The contrast enhancement refers to the normalization of SAD scores within a sliding window of size $R$. The contrast enhanced SAD matrix is then searched for image sequence trajectories of size $D_s$ within a limited range of velocities originating from each of the reference image. The sequence trajectory with best SAD score is then selected using a trajectory uniqueness threshold $\mu$.
+In general, a place recognition system comprises of a pre-processing stage, then a method to calculate affinity scores between database places and the query, and finally a decision module for generating the best matching pairs. This is also depicted in Fig. \ref{fig:flowchart}.
+\subsubsection{Sequence-based recognition}
+In addition to the above mentioned place recognition pipeline, a sequence-based recognition method exploits the temporal information inherent in this problem. Therefore, searching for a matching sequence of places is a better approach than deciding a match based only on single matching template from reference imagery. SeqSLAM \cite{Milford2012} is a sequence-based place recognition method developed on similar principle. Moreover, it is known to work remarkably well in challenging environmental conditions and is able to recognize places despite seasonal, weather or time of day variations. The recent advanced methods \cite{milford2015sequence}, \cite{wang2015improved}, \cite{milford2015place} etc. inspired from SeqSLAM further improve the state-of-the-art for place recognition. In this paper, we use the vanilla approach to show the performance improvement of a place recognition system, under the influence of variations in the surrounding environment, with the help of semantic information associated with those places. The detailed methodology of SeqSLAM can be referred to in \cite{Milford2012}.
+
+SeqSLAM performs place recognition using Sum of Absolute Difference (SAD) scores represented as $D$ between preprocessed reference and query images. The preprocessing step involves down-sampling of image to size $S_x$ and $S_y$ and patch normalizing it with a fixed square window of side length $P$.
+\begin{equation}
+ D_i = \frac{1}{S_xS_y} \sum\limits_{x=0}^{S_x}\sum\limits_{y=0}^{S_y}|p_{x,y}^i-p_{x,y}|
+ \label{eq:SADscore}
+\end{equation}
+where $p_{x,y}^i$ and $p_{x,y}$ are the pixel intensities of patch normalized query and reference images.
+
+The difference vector so obtained for each query image is normalized within a sliding window of size $R$. The normalized difference $\hat{D_i}$ is calculated using the local mean difference $\bar{D_i}$ and local standard deviation $\sigma_i$.
+\begin{equation}
+ \hat{D_i} = \frac{D_i-\bar{D_i}}{\sigma_i}
+ \label{eq:normScore}
+\end{equation}
+
+The normalized SAD matrix is then searched for local image sequence trajectories of length $d_s$, within a limited range of velocities, originating from each of the reference image. The sequence trajectory with best score is then selected using a trajectory uniqueness threshold $\mu$.
+
+The normalization of place matching scores from Eq. \ref{eq:SADscore} within the window $R$, as calculated in Eq. \ref{eq:normScore} reflects the emphasis on matching a local physical region of the environment. The parameter $R$ represents the span of environment, where the matching scores are locally enhanced. Our aim is to pre-define the physical regions of the environment for effectively matching the places that share similar semantic labels. The subsequent section shows how this can be achieved using the place recognition method chosen above.
 
 \subsubsection{Segmented Region Normalization}
-The contrast enhancement step in SeqSLAM uses an arbitrary window size for locally normalizing the matching scores as described above. We use the segmented regions of the dataset to set the normalization window of each query image. The label associated with the query image is used to identify the matching regions of dataset where the normalization is performed with window size equivalent to the size of the matching region. The unmatched regions use the vanilla method of contrast enhancement.
+The score normalization step in SeqSLAM uses an arbitrary window size for locally normalizing the matching scores as given in Eq. \ref{eq:normScore}. We use the segmented regions of the dataset to set the normalization window of each query image. The label associated with the query image is used to identify the matching regions of dataset where the normalization is performed with window size equivalent to the size of the matching region. The unmatched regions use the vanilla method of contrast enhancement.
 
 \section{Experimental Setup}
 The experiments are performed using two datasets described in subsequent section. The image classification is performed using Dell M4800 Intel Core i7, 3.1 GHz processor with NVIDIA Quadro K2100M graphics card. The place recognition is performed using Dell E7450 Intel Core i7, 2.6 GHz processor. The classification is done as a preprocessing step for reference as well as query database off-line.
