@@ -69,22 +69,6 @@ We see the problem of place categorization as an extension to the place recognit
 	\label{fig:flowchart}
 \end{figure}
 
-\newcommand{\scaleVal}{0.27}
-\begin{figure*}
-\centering
- \begin{tabular}{ccc}
-  \includegraphics[scale=\scaleVal]{1-outdoor} &
-  \includegraphics[scale=\scaleVal]{2-stairs} &
-%  \includegraphics[scale=\scaleVal]{3-campus} &
-  \includegraphics[scale=\scaleVal]{3-indoor} \\
-%  \includegraphics[scale=\scaleVal]{5-lawn} &
-  \includegraphics[scale=\scaleVal]{4-railroad} &
-  \includegraphics[scale=\scaleVal]{5-subway} &
-  \includegraphics[scale=\scaleVal]{6-tunnel} \\
- \end{tabular}
- \caption{Images from reference database with top-5 most probable semantic labels out of 102 scene attributes for Campus Dataset (top) and CTA Rail Dataset (bottom).}
- \label{fig:labelledImages}
-\end{figure*}
 
 In this work, we combine the two frameworks of place recognition and place categorization to improve place recognition localization performance. Our primary contribution is the utilization of a place categorization framework to inform place recognition place matches (as seen in Fig.~\ref{fig:flowchart}).  We utilize the Convolutional Neural Network (CNN) model VGG16-places365 \cite{cnnPlaces365Github} pre-trained on Places365 database \cite{zhou2014learning} and scene attributes  \cite{Patterson2012SunAttributes} for performing place categorization. Once a place is categorized, we leverage the SeqSLAM framework to perform place recognition, implementing a dynamic weighting scheme biasing place matches with similar place characteristic and place categorization results. 
 
@@ -126,12 +110,30 @@ However, there has been no prior work utilizing place categorization information
 
 
 \section{Proposed Method}
-The proposed approach has two main components: place categorization and place recognition as depicted in Fig. \ref{fig:flowchart}, with semantic information flowing from the former to the latter to generate the final outcome. The semantic labels divide the physical space into different regions based on its appearance, that is, scene attributes. These segmented regions are then used for improving the place recognition performance. We use CNN model VGG16-places365 \cite{cnnPlaces365Github} pre-trained on Places365 database \cite{zhou2014learning} for labeling reference and query database with most probable scene attributes \cite{Patterson2012SunAttributes}. We use SeqSLAM \cite{Milford2012} for showing improved place recognition using semantic information by appropriately enhancing the image matching scores.
+The proposed approach has two main components: place categorization and place recognition as depicted in Fig. \ref{fig:flowchart}, with semantic information flowing from the former to the latter to generate the final \hl{place match estimate}. The semantic labels divide the physical space into different regions based on its appearance, that is, scene attributes. These segmented regions are then used for improving the place recognition performance. We use CNN model VGG16-places365 \cite{cnnPlaces365Github} pre-trained on the Places365 database \cite{zhou2014learning} for labeling reference and query database \hl{frames} with most probable scene attributes \cite{Patterson2012SunAttributes}. We use SeqSLAM \cite{Milford2012} for showing improved place recognition using semantic information by appropriately enhancing the image matching scores.
 
 \subsection{Place Categorization}
 
+\newcommand{\scaleVal}{0.27}
+\begin{figure*}
+	\centering
+	\begin{tabular}{ccc}
+		\includegraphics[scale=\scaleVal]{1-outdoor} &
+		\includegraphics[scale=\scaleVal]{2-stairs} &
+		%  \includegraphics[scale=\scaleVal]{3-campus} &
+		\includegraphics[scale=\scaleVal]{3-indoor} \\
+		%  \includegraphics[scale=\scaleVal]{5-lawn} &
+		\includegraphics[scale=\scaleVal]{4-railroad} &
+		\includegraphics[scale=\scaleVal]{5-subway} &
+		\includegraphics[scale=\scaleVal]{6-tunnel} \\
+	\end{tabular}
+	\caption{Images from reference database with top-5 most probable semantic labels out of 102 scene attributes for Campus Dataset (top) and CTA Rail Dataset (bottom).}
+	\label{fig:labelledImages}
+\end{figure*}
+
+
 \subsubsection{Image Classification}
-The pre-trained CNN model classifies an image with probabilities associated with each of the 365 place categories. It also predicts the most probable scene attributes (out of 102 attributes trained on SUN database \cite{Patterson2012SunAttributes}) using one of its fully-connected layers. We use the top-5 most probable attribute predictions for post-processing the image labels to semantically segment datasets. The predicted scene attributes for some of the images from datasets used in this paper are shown in Fig. \ref{fig:labelledImages}. The classification is performed on the entire reference and query database. The reference database labels are used for temporally dividing the image sequence into different chunks based on its scene attributes. The query database labels are used later during place recognition for identifying the correct semantic segment of reference database and effectively matching the image sequence.
+The pre-trained CNN model classifies an image with probabilities associated with each of the 365 place categories. It also predicts the most probable scene attributes (out of 102 attributes trained on the SUN database \cite{Patterson2012SunAttributes}) using one of its fully-connected layers. We use the top-5 most probable attribute predictions for post-processing the image labels to semantically segment datasets. The predicted scene attributes for some of the images from datasets used in this paper are shown in Fig. \ref{fig:labelledImages}. The classification is performed on the entire reference and query database. The reference database labels are used for temporally dividing the image sequence into different chunks based on its scene attributes. The query database labels are used later during place recognition for identifying the correct semantic segment of reference database and effectively matching the image sequence.
 
 \subsubsection{Dataset Segmentation}
 The image labels for reference database obtained from the classifier usually do not exhibit local temporal consistency. In order to achieve an adequate dataset segmentation, we find temporal connected components in the database. Each image in the database is represented by a node $N_i$ defined as a set containing the top-5 predicted labels and the most probable prediction label $L_i$. A consecutive pair of nodes is considered to be connected if an edge $E_{i,i+1}$ exists between them as per Eq. \ref{eq:connectedComponent}.
@@ -157,9 +159,9 @@ This label $L'_i$ is used for representing the connected component as well as ea
  \label{eq:labelsMode}
 \end{equation}
 
-For sake of clearance, it can be noted that labels $L'_i$ are obtained by looking at the labels of individual nodes of a connected component and are then assigned to that component and its participating nodes, whereas, the labels $\hat{L}_i$ are obtained by looking at the individual nodes of the entire database and then assigned to that particular node itself where the sliding window is centered. The purpose of the former is intra-component label consistency while the latter is for inter-component label consistency.
+For sake of \hl{clarity}, it can be noted that labels $L'_i$ are obtained by looking at the labels of individual nodes of a connected component and are then assigned to that component and its participating nodes, whereas, the labels $\hat{L}_i$ are obtained by looking at the individual nodes of the entire database and then assigned to that particular node itself where the sliding window is centered. The purpose of the former is intra-component label consistency while the latter is for inter-component label consistency.
 
-The filtered image labels $\hat{L}_i$ are finally used to segment the database into $M$ chunks represented as $C_K = \{N_{C_K},N_{C_{K+1}}\}$, where $N_{C_K}$ and $N_{C_{K+1}}$ are the nodes that mark the beginning and end of the data chunk. The label corresponding to each chunk is same as the label for all its nodes and is represented as $\hat{L}_{C_K}$. These chunks represent the variation in appearance of the environment while traversing the route. For example, a train running underground as opposed to over the ground will have different appearance of its environment. Similarly, a person walking indoor or outdoor of a campus will witness different surrounding environment as shown in Fig. \ref{fig:labelledImages}. Fig. \ref{fig:datasetLabels} shows the images and their semantic labels at the segmentation transition points for one of the datasets used in this paper.
+The filtered image labels $\hat{L}_i$ are finally used to segment the database into $M$ chunks represented as $C_K = \{N_{C_K},N_{C_{K+1}}\}$, where $N_{C_K}$ and $N_{C_{K+1}}$ are the nodes that mark the beginning and end of the data chunk. The label corresponding to each chunk is the same as the label for all its nodes and is represented as $\hat{L}_{C_K}$. These chunks represent the variation in appearance of the environment while traversing the route. For example, a train running underground as opposed to over the ground will have different appearance of its environment. Similarly, a person walking indoor or outdoor of a campus will witness different surrounding environment as shown in Fig. \ref{fig:labelledImages}. Fig. \ref{fig:datasetLabels} shows the images and their semantic labels at the segmentation transition points for one of the datasets used in this paper.
 
 \begin{figure}
  \includegraphics[clip, trim=2cm 4cm 2cm 4cm,scale=0.32]{cta-dataset-segmentation-1}
@@ -168,7 +170,7 @@ The filtered image labels $\hat{L}_i$ are finally used to segment the database i
 \end{figure}
 
 \subsection{Place Recognition}
-In general, a place recognition system comprises of a pre-processing stage, then a method to calculate affinity scores between database places and the query, and finally a decision module for generating the best matching pairs. This is also depicted in Fig. \ref{fig:flowchart}.
+In general, a place recognition system comprises of a pre-processing stage, then a method to calculate affinity scores between database places and the query, and finally a decision module for generating the best matching pairs, as seen in Fig. \ref{fig:flowchart}.
 \subsubsection{Sequence-based place matching}
 In addition to the above mentioned place recognition pipeline, a sequence-based recognition method exploits the temporal information inherent in this problem. Therefore, searching for a matching sequence of places is a better approach than deciding a match based only on single matching template from reference imagery. SeqSLAM \cite{Milford2012} is a sequence-based place recognition method developed on similar principle. Moreover, it is known to work remarkably well in challenging environmental conditions and is able to recognize places despite seasonal, weather or time of day variations. The recent advanced methods \cite{milford2015sequence}, \cite{wang2015improved}, \cite{milford2015place} etc. inspired from SeqSLAM further improve the state-of-the-art for place recognition. In this paper, we use the vanilla approach to show the performance improvement of a place recognition system, under the influence of variations in the surrounding environment, with the help of semantic information associated with those places. The detailed methodology of SeqSLAM can be referred to in \cite{Milford2012}.
 
@@ -179,19 +181,19 @@ SeqSLAM performs place recognition using Sum of Absolute Difference (SAD) scores
 \end{equation}
 where $p_{x,y}^i$ and $p_{x,y}^j$ are the pixel intensities of patch normalized reference and query images.
 
-The difference vector so obtained for each query image undergoes neighborhood normalization within a sliding window of size $R$, also termed as neighborhood normalization zone width. The neighborhood normalized difference for a given query image, $\hat{D_i}^R$ is calculated using the local mean difference $\bar{D_i}^R$ and local standard deviation $\sigma_i^R$.
+The difference vector obtained for each query image undergoes neighborhood normalization within a sliding window of size $R$, also termed as neighborhood normalization zone width. The neighborhood normalized difference for a given query image, $\hat{D_i}^R$ is calculated using the local mean difference $\bar{D_i}^R$ and local standard deviation $\sigma_i^R$.
 \begin{equation}
  \hat{D_i}^R = \frac{D_i-\bar{D_i}^R}{\sigma_i^R}
  \label{eq:normScore}
 \end{equation}
 
-The neighborhood normalized SAD matrix is then searched for local image sequence trajectories of length $d_s$, within a limited range of velocities, originating from each of the reference image. The sequence trajectory with best score is then selected using a trajectory uniqueness threshold $\mu$.
+The neighborhood normalized SAD matrix is then searched for local image sequence trajectories of length $d_s$, within a limited range of velocities, originating from each of the reference image. The sequence trajectory with the best score is then selected using a trajectory uniqueness threshold $\mu$.
 
 \subsubsection{Implicit dataset segmentation}
 The neighborhood normalization of place matching scores within the window $R$, as calculated in Eq. \ref{eq:SADscore} and \ref{eq:normScore}, reflects the emphasis on matching a local physical region of the environment. The parameter $R$ represents the span of environment, where the matching scores are locally enhanced. Our aim is to pre-define these physical regions of the environment for effectively matching the places that share similar semantic labels. The subsequent section shows how this can be achieved using the place recognition method chosen above.
 
 \subsubsection{Semantically-informed place matching}
-The segmentation of dataset as described in earlier section using the consistency of semantic labels, is a way of separating the physical space into regions with similar environmental conditions. As shown in Fig. \ref{fig:flowchart}, in general, a place recognition system can use the semantic information from the place categorization module to enhance its affinity scores for matching places. We show the effect of this by implementing it for the place recognition method - SeqSLAM as described below.
+The segmentation of the dataset as described in earlier sections using the consistency of semantic labels, is a way of separating the physical space into regions with similar environmental conditions. As shown in Fig. \ref{fig:flowchart}, in general, a place recognition system can use the semantic information from the place categorization module to enhance its affinity scores for matching places. We show the effect of this by implementing it for the place recognition method - SeqSLAM as described below.
 
 The first step towards exploiting the segmented regions of the reference database and semantic labeling is to find the region candidates that have the same label as the query image. This is achieved by simply matching the labels of the segmented regions, $\hat{L}_{C_K}$ and the query image label $\hat{L}_j$. For a given query image $N_j$, these region candidates are used to define the neighborhood ranges in the reference database for normalization purpose:
 \begin{equation}
@@ -232,25 +234,49 @@ The incorporation of segmented regions based neighborhood normalization as shown
 
 
 \section{Experimental Setup}
-The experiments are performed using two datasets described in subsequent section. The image classification is performed using Dell M4800 Intel Core i7, 3.1 GHz processor with NVIDIA Quadro K2100M graphics card. The place recognition is performed using Dell E7450 Intel Core i7, 2.6 GHz processor. The image classification part is done as an off-line preprocessing step for reference as well as query database.
+The experiments are performed using two datasets described in a subsequent section. The image classification is performed using a Dell M4800 Intel Core i7, 3.1 GHz processor with NVIDIA Quadro K2100M graphics card. The place recognition is performed using Dell E7450 Intel Core i7, 2.6 GHz processor. The image classification part is done as an off-line preprocessing step for reference and query databases.
 
 \subsection{Datasets}
 The two datasets used in the experiments exhibit variations in environmental conditions as the route is traversed.
 
 \subsubsection{CTA-Rail}
-The CTA-Rail (Chicago Transit Authority) dataset (Fig. \ref{fig:ctaTraj}) comprises of two videos traversing a 23 km railway route (Blue Line, Forest Park to O'Hare), recorded once in 2014 \cite{ctaRail2014} and then in 2015 \cite{ctaRail2015}, available online. A single camera is placed at the head of the train facing forward the railway track. The videos comprise of scenes from train stations platforms, subway station platforms, subway tunnels, and railroad tracks within highways and urban areas. The raw videos are approximately 73 and 84 minutes in duration with 132670 and 149090 frames respectively. We used the 480p version of the video and processed every 200th frame for all the experiments. The resultant reference and query databases have therefore 656 and 738 image frames respectively.
+The CTA-Rail (Chicago Transit Authority) dataset (Fig. \ref{fig:ctaTraj}) comprises of two videos traversing a 23 km railway route (Blue Line, Forest Park to O'Hare), recorded once in 2014 \cite{ctaRail2014} and then in 2015 \cite{ctaRail2015}, available online. A single camera is placed at the head of the train facing forward toward the railway track. The videos comprise of scenes from train stations platforms, subway station platforms, subway tunnels, and railroad tracks within highways and urban areas. The raw videos are approximately 73 and 84 minutes in duration with 132670 and 149090 frames respectively. We used the 480p version of the video and processed every 200th frame for all the experiments. The resultant reference and query databases have therefore 656 and 738 image frames respectively.
 
 \subsubsection{Campus Indoor-Outdoor}
-The Campus Indoor-Outdoor dataset comprises of two videos with repeated traversal of a part of Ulm University of Applied Sciences' campus from outside lawn to inside corridor \cite{indoorOutdoor1,indoorOutdoor2}. The videos have been recorded using a hand-held device with single camera and exhibits jerky motion with huge motion blur. The raw videos are cropped to remove the comments at the bottom and an overlaid navigation display on the right side. The videos are also snipped from beginning so that the starting point is aligned in both the datasets. The datasets comprise of scenes from outside the campus, with trees, grass and pavement, and from inside the campus, traversing through entrance hall, staircase, lobby and corridor. The reference and query database is processed by using every 10th image and therefore uses 355 and 300 frames respectively.
+The Campus Indoor-Outdoor dataset comprises of two videos with repeated traversal of a part of \hl{Ulm?} University of Applied Sciences' campus from an outside lawn to an inside corridor \cite{indoorOutdoor1,indoorOutdoor2}. The videos have been recorded using a hand-held device with single camera and exhibits jerky motion with huge motion blur. The raw videos are cropped to remove the comments at the bottom and an overlaid navigation display on the right side. The videos are also snipped from beginning so that the starting point is aligned in both the datasets. The datasets comprise of scenes from outside the campus, with trees, grass and pavement, and from inside the campus, traversing through entrance hall, staircase, lobby and corridor. The reference and query database is processed by using every 10th image and therefore uses 355 and 300 frames respectively.
 
 \subsubsection{Ground Truth}
-The place recognition ground truth for both the datasets was generated manually for intermittent frames and then interpolated for rest of the image sequence. A query image is considered to be a true positive match for the reference image if its index lies within a range of 5 image frames from the ground truth index.
+The place recognition ground truth for both the datasets was generated manually for intermittent frames and then interpolated for the rest of the image sequence. A query image is considered to be a true positive match for the reference image if its index lies within a range of 5 image frames from the ground truth index.
 
 \subsubsection{SeqSLAM parameters}
 The parameters for SeqSLAM used for all the experiments are shown in Table \ref{table:seqSLAMParams}.
 
+\begin{table}[!h]
+	\caption{SeqSLAM parameters.}
+	\begin{tabular}{|c|p{4cm}|p{2.5cm}|}
+		\hline
+		$S_x\mathbf{x}S_y$ & Image Down-sampling Size & 32x32 \\
+		\hline
+		$P$ & Patch Normalization Window Size & {2,4,8,16} \\
+		\hline
+		$O$ & Image Matching Offset Range & $\pm10$ \\
+		\hline
+		$d_s$ & Sequence Length & 15 \\
+		\hline
+		$R$ & Neighborhood Normalization Zone Width & {10,20,40,80,160} \\
+		\hline
+		$V$ & Sequence Search Velocity Range & $(1\pm0.2)$*$d_s$ \\
+		\hline
+		$\mu$ & Trajectory Uniqueness Threshold & Varied \\
+		\hline
+	\end{tabular}
+	\label{table:seqSLAMParams}
+\end{table}
+
 \section{Results}
-We used maximum F1 Score to measure place recognition performance of SeqSLAM by varying the trajectory uniqueness parameter (described in \cite{Milford2012}), that is, the threshold for deciding a correctly matched place. The comparative results were generated between the proposed method and vanilla SeqSLAM for two different datasets. We used two parameters of SeqSLAM method that are known to affect its performance, to measure the trends in performance change. The performance improvement is as shown in Figure \ref{fig:performanceChart} and the effect of parameters is discussed in subsequent section. 
+We used maximum F1 Score to measure place recognition performance of SeqSLAM by varying the trajectory uniqueness parameter (described in \cite{Milford2012}), that is, the threshold for deciding a correctly matched place. The comparative results were generated between the proposed method and vanilla SeqSLAM for the two different datasets. We used two parameters of SeqSLAM method that are known to affect its performance, to measure the trends in performance change. The performance improvement is as shown in Figure \ref{fig:performanceChart} and the effect of parameters is discussed in a subsequent section. 
+
+\hl{Need to mention Fig.6 here because it is currently not cited until the discussion. }
 
 \newcommand{\imgH}{3cm}
 \newcommand{\imgW}{4cm}
@@ -297,7 +323,7 @@ In this work, we presented a system which combines place categorization informat
 
 \subsection{Effect of SeqSLAM parameters}
 \subsubsection{Neighborhood Normalization Zone Width ($R$)}
-The neighborhood normalization parameter $R$ is used to set the window size for locally enhancing the match scores. As shown in Figure \ref{fig:performanceChart}, performance of vanilla SeqSLAM gets better with an increase in $R$. This can be expected because normalizing over a larger image sequence balances the overall variation in scores for an environment with varying conditions, but it leads to suppressing of correct matching pairs corresponding to images having low matching scores, especially in the smaller zones. The same argument is also applicable to smaller zone width at transition points in the environment. On the other hand, using segmented regions to set the normalization zone width, effectively highlights the matching scores in appropriate regions and generates more true positives. The performance is, therefore, most of the times better than the best achieved using vanilla approach with any value of $R$. Moreover, wider neighborhood zones for normalization, are not appropriate for large datasets and long time navigation due to computational burden. 
+The neighborhood normalization parameter $R$ is used to set the window size for locally enhancing the match scores. As shown in Figure \ref{fig:performanceChart}, performance of vanilla SeqSLAM gets better with an increase in $R$. This can be expected because normalizing over a larger image sequence balances the overall variation in scores for an environment with varying conditions, but it leads to suppressing of correct matching pairs corresponding to images having low matching scores, especially in the smaller zones. The same argument is also applicable to smaller zone width at transition points in the environment. On the other hand, using segmented regions to set the normalization zone width, effectively highlights the matching scores in appropriate regions and generates more true positives. The performance is, therefore, most of the time better than the best achieved using vanilla approach with any value of $R$. Moreover, wider neighborhood zones for normalization, are not appropriate for large datasets and long time navigation due to computational burden. 
 
 \subsubsection{Patch Normalization Window Size ($P$)}
 The images used for finding SAD score are preprocessed by down-sampling them to the size of $32\mathbf{x}32$ and patch normalizing them in order to counter the change in appearance of their matching counterparts. Depending on the type of environment and corresponding imagery, the patch normalization window size can give different performance. In the experiments performed for current work, we found that patch normalization window size of 4 for the given down-sampling image size performs better.
@@ -308,36 +334,15 @@ Fig. \ref{fig:RPerformance} shows a performance comparison for both the datasets
 \subsection{Transitions Within Environment}
 We have demonstrated performance improvement for a place recognition system by appropriately handling different visual conditions within the environment, but one also needs to be careful about the exact point of transition within these different conditional settings. In general, there is a sequence of images, that are encountered, for example, while moving from outside the tunnel to inside the tunnel and vice versa. The current state-of-the-art place categorization module trained on limited number of places or scene attributes cannot always effectively discriminate the transition point from the environments where the transition takes place. This leads to false matching of false semantic labels and hence poor performance at those points. Moreover, in our current approach, the transition areas, spanning only few images, also get ignored during the label filtering process. Though, it can be taken care of by using smaller filtering window $s$ (described in earlier sections), but then it would demand correct semantic labels with temporal consistency. This problem makes more sense to be solved from the place categorization side, by training place categories at a further fine level, such that being inside the tunnel or outside of it is also discriminated from starting to seeing the tunnel entry or the exit, which actually marks the transition to a new environment, which also becomes a part of our future work.
 
-\begin{table}[!h]
-\caption{SeqSLAM parameters.}
- \begin{tabular}{|c|p{4cm}|p{2.5cm}|}
- \hline
-  $S_x\mathbf{x}S_y$ & Image Down-sampling Size & 32x32 \\
-  \hline
-  $P$ & Patch Normalization Window Size & {2,4,8,16} \\
-  \hline
-  $O$ & Image Matching Offset Range & $\pm10$ \\
-  \hline
-  $d_s$ & Sequence Length & 15 \\
-  \hline
-  $R$ & Neighborhood Normalization Zone Width & {10,20,40,80,160} \\
-  \hline
-  $V$ & Sequence Search Velocity Range & $(1\pm0.2)$*$d_s$ \\
-  \hline
-  $\mu$ & Trajectory Uniqueness Threshold & Varied \\
- \hline
- \end{tabular}
-\label{table:seqSLAMParams}
-\end{table}
 
 \subsection{Future Work}
-The current work can be extended to incorporate labels of place categories or scene attributes defined at finer levels, as also discussed in previous section. Such fine level place categorization will be directed towards the ordinary place recognition problem where each place despite being from same semantic category, is treated as a separate place. It would also be worth exploring ways to dynamically determine the sequence length for matching places while using the semantic place information.  We would also like to investigate better ways of generating semantic labels with temporal coherence, given that object recognition and place categorization like research problems usually focus on single images instead of image sequences. Another interesting direction could be a deep-learning framework, using a combination of LSTM and CNN to effectively exploit the temporal and spatial information respectively and infer relationship between places with similar visual appearances.
+The current work can be extended to incorporate labels of place categories or scene attributes defined at finer levels, as also discussed in previous section. Such fine level place categorization will be directed towards the ordinary place recognition problem where each place, despite being from same semantic category, is treated as a separate place. It would also be worth exploring ways to dynamically determine the sequence length for matching places while using the semantic place information.  We would also like to investigate better ways of generating semantic labels with temporal coherence, given that the research problems of object recognition and place categorization usually focus on single images instead of image sequences. Another interesting direction could be a deep-learning framework, using a combination of LSTM and CNN to effectively exploit the temporal and spatial information respectively and infer relationship between places with similar visual appearances.
 
 
 
 %\section{Conclusion}
 
-%\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
+\addtolength{\textheight}{-8cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
                                   % the textheight of the last page by a suitable amount.
                                   % This command does not take effect until the next page
