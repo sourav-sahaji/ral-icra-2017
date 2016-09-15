@@ -18,6 +18,12 @@
 \fi
 #2}}
 
+\bibitem{sunderhauf2016place}
+N.~Sunderhauf, F.~Dayoub, S.~McMahon, B.~Talbot, R.~Schulz, P.~Corke, G.~Wyeth,
+  B.~Upcroft, and M.~Milford, ``Place categorization and semantic mapping on a
+  mobile robot,'' in \emph{Proceedings of the International Conference on
+  Robotics and Automation}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2016.
+
 \bibitem{Cummins2009}
 M.~Cummins and P.~Newman, ``{Highly scalable appearance-only SLAM - FAB-MAP
   2.0},'' in \emph{Robotics: Science and Systems}, Seattle, United States,
@@ -79,12 +85,6 @@ J.~Wu, H.~I. Christensen, and J.~M. Rehg, ``Visual place categorization:
   Problem, dataset, and algorithm,'' in \emph{2009 IEEE/RSJ International
   Conference on Intelligent Robots and Systems}.\hskip 1em plus 0.5em minus
   0.4em\relax IEEE, 2009, pp. 4763--4770.
-
-\bibitem{sunderhauf2016place}
-N.~Sunderhauf, F.~Dayoub, S.~McMahon, B.~Talbot, R.~Schulz, P.~Corke, G.~Wyeth,
-  B.~Upcroft, and M.~Milford, ``Place categorization and semantic mapping on a
-  mobile robot,'' in \emph{Proceedings of the International Conference on
-  Robotics and Automation}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2016.
 
 \bibitem{ranganathan2011visual}
 A.~Ranganathan and J.~Lim, ``Visual place categorization in maps,'' in

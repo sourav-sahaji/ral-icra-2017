@@ -33,14 +33,10 @@
 Improving Condition- and Environment-Invariant Place Recognition with Semantic Place Categorization
 }
 
-\author{Albert Author$^{1}$ and Bernard D. Researcher$^{2}$% <-this % stops a space
-\thanks{*This work was not supported by any organization}% <-this % stops a space
-\thanks{$^{1}$Albert Author is with Faculty of Electrical Engineering, Mathematics and Computer Science,
-        University of Twente, 7500 AE Enschede, The Netherlands
-        {\tt\small albert.author@papercept.net}}%
-\thanks{$^{2}$Bernard D. Researcheris with the Department of Electrical Engineering, Wright State University,
-        Dayton, OH 45435, USA
-        {\tt\small b.d.researcher@ieee.org}}%
+\author{Sourav Garg, Adam Jacobson and Michael Milford% <-this % stops a space
+\thanks{All the authors are with Australian Centre for Robotic Vision,
+        Queensland University of Technology,
+        2 George St, Brisbane, Australia}%
 }
 
 
@@ -55,7 +51,7 @@ Improving Condition- and Environment-Invariant Place Recognition with Semantic P
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-The problem of place recognition actually comprises two distinct subproblems; ``ordinary'' place recognition which is recognizing a specific location in the world, and place ``categorization'', which involves recognizing the type of place. Both components of place recognition are competencies for robotic navigation systems and hence have each in isolation received significant attention in the robotics and computer vision community. In this paper, we leverage the powerful complementary nature of the place recognition and place categorization processes to create a new state-of-the-art ordinary place recognition system that uses place context to inform place recognition. We show that semantic place categorization creates a more informative natural segmenting of physical space than the blindly applied fixed segmentation used in algorithms such as SeqSLAM, which enables significantly better place recognition performance. In particular, where existing condition-invariant algorithms enable robustness to globally consistent change (such as day to night cycles), this new semantically informed approach adds robustness to significant changes within the environment, such as transitioning from indoor to outdoor environments. We perform a number of experiments using benchmark and new datasets and show that semantically-informed place recognition outperforms the previous state of the art systems. Like it does for object recognition [ref Niko IROS2015], we believe that  semantics can play a key role in boosting conventional place recognition and navigation performance for robotic systems.
+The problem of place recognition actually comprises two distinct subproblems; ``ordinary'' place recognition which is recognizing a specific location in the world, and place ``categorization'', which involves recognizing the type of place. Both components of place recognition are competencies for robotic navigation systems and hence have each in isolation received significant attention in the robotics and computer vision community. In this paper, we leverage the powerful complementary nature of the place recognition and place categorization processes to create a new state-of-the-art ordinary place recognition system that uses place context to inform place recognition. We show that semantic place categorization creates a more informative natural segmenting of physical space than the blindly applied fixed segmentation used in algorithms such as SeqSLAM, which enables significantly better place recognition performance. In particular, where existing condition-invariant algorithms enable robustness to globally consistent change (such as day to night cycles), this new semantically informed approach adds robustness to significant changes within the environment, such as transitioning from indoor to outdoor environments. We perform a number of experiments using benchmark and new datasets and show that semantically-informed place recognition outperforms the previous state of the art systems. Like it does for object recognition \cite{sunderhauf2016place}, we believe that  semantics can play a key role in boosting conventional place recognition and navigation performance for robotic systems.
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -73,9 +69,10 @@ We see the problem of place categorization as an extension to the place recognit
 	\label{fig:flowchart}
 \end{figure}
 
-\newcommand{\scaleVal}{0.28}
+\newcommand{\scaleVal}{0.27}
 \begin{figure*}
- \begin{tabular*}{\textwidth}{ccc}
+\centering
+ \begin{tabular}{ccc}
   \includegraphics[scale=\scaleVal]{1-outdoor} &
   \includegraphics[scale=\scaleVal]{2-stairs} &
 %  \includegraphics[scale=\scaleVal]{3-campus} &
@@ -84,7 +81,7 @@ We see the problem of place categorization as an extension to the place recognit
   \includegraphics[scale=\scaleVal]{4-railroad} &
   \includegraphics[scale=\scaleVal]{5-subway} &
   \includegraphics[scale=\scaleVal]{6-tunnel} \\
- \end{tabular*}
+ \end{tabular}
  \caption{Images from reference database with top-5 most probable semantic labels out of 102 scene attributes for Campus Dataset (top) and CTA Rail Dataset (bottom).}
  \label{fig:labelledImages}
 \end{figure*}
@@ -137,7 +134,7 @@ The proposed approach has two main components: place categorization and place re
 The pre-trained CNN model classifies an image with probabilities associated with each of the 365 place categories. It also predicts the most probable scene attributes (out of 102 attributes trained on SUN database \cite{Patterson2012SunAttributes}) using one of its fully-connected layers. We use the top-5 most probable attribute predictions for post-processing the image labels to semantically segment datasets. The predicted scene attributes for some of the images from datasets used in this paper are shown in Fig. \ref{fig:labelledImages}. The classification is performed on the entire reference and query database. The reference database labels are used for temporally dividing the image sequence into different chunks based on its scene attributes. The query database labels are used later during place recognition for identifying the correct semantic segment of reference database and effectively matching the image sequence.
 
 \subsubsection{Dataset Segmentation}
-The image labels for reference database obtained from the classifier do not usually local temporal consistency. In order to achieve an adequate dataset segmentation, we find temporal connected components in the database. Each image in the database is represented by a node $N_i$ defined as a set containing the top-5 predicted labels and the most probable prediction label $L_i$. A consecutive pair of nodes is considered to be connected if an edge $E_{i,i+1}$ exists between them as per Eq. \ref{eq:connectedComponent}.
+The image labels for reference database obtained from the classifier usually do not exhibit local temporal consistency. In order to achieve an adequate dataset segmentation, we find temporal connected components in the database. Each image in the database is represented by a node $N_i$ defined as a set containing the top-5 predicted labels and the most probable prediction label $L_i$. A consecutive pair of nodes is considered to be connected if an edge $E_{i,i+1}$ exists between them as per Eq. \ref{eq:connectedComponent}.
 \begin{equation}
  E_{i,i+1} = 
  \begin{cases}
@@ -165,7 +162,7 @@ For sake of clearance, it can be noted that labels $L'_i$ are obtained by lookin
 The filtered image labels $\hat{L}_i$ are finally used to segment the database into $M$ chunks represented as $C_K = \{N_{C_K},N_{C_{K+1}}\}$, where $N_{C_K}$ and $N_{C_{K+1}}$ are the nodes that mark the beginning and end of the data chunk. The label corresponding to each chunk is same as the label for all its nodes and is represented as $\hat{L}_{C_K}$. These chunks represent the variation in appearance of the environment while traversing the route. For example, a train running underground as opposed to over the ground will have different appearance of its environment. Similarly, a person walking indoor or outdoor of a campus will witness different surrounding environment as shown in Fig. \ref{fig:labelledImages}. Fig. \ref{fig:datasetLabels} shows the images and their semantic labels at the segmentation transition points for one of the datasets used in this paper.
 
 \begin{figure}
- \includegraphics[clip, trim=2cm 4cm 2cm 4cm,scale=0.33]{cta-dataset-segmentation-1}
+ \includegraphics[clip, trim=2cm 4cm 2cm 4cm,scale=0.32]{cta-dataset-segmentation-1}
  \caption{The time-line of CTA-Rail dataset with semantically labeled images at the transition points of segmented reference database. (Time-line created using \cite{timelineRWT})}
  \label{fig:datasetLabels}
 \end{figure}
@@ -198,7 +195,10 @@ The segmentation of dataset as described in earlier section using the consistenc
 
 The first step towards exploiting the segmented regions of the reference database and semantic labeling is to find the region candidates that have the same label as the query image. This is achieved by simply matching the labels of the segmented regions, $\hat{L}_{C_K}$ and the query image label $\hat{L}_j$. For a given query image $N_j$, these region candidates are used to define the neighborhood ranges in the reference database for normalization purpose:
 \begin{equation}
- \mathbf{R}'_i = \{\{N_{C_K},N_{C_{K+1}}\}\mid\hat{L}_{C_K}=\hat{L}_j, i\in\{N_{C_K},N_{C_{K+1}}\} \} \forall i,K
+\begin{split}
+ \mathbf{R}'_i = \{\{N_{C_K},N_{C_{K+1}}\}\mid\hat{L}_{C_K}=\hat{L}_j \text{ and } \\
+ i\in\{N_{C_K},N_{C_{K+1}}\} \} \hspace{0.2cm}\forall i,K
+\end{split}
 \end{equation}
 where $i$ iterates over all the reference images, $K$ iterates over all the segmented regions, and $\mathbf{R}'_i$ is the set of pairs of nodes that define the range for neighborhood normalization. If $\mathbf{R}'_i$ happens to be a null set, then the vanilla method is used, otherwise:
 
@@ -238,10 +238,10 @@ The experiments are performed using two datasets described in subsequent section
 The two datasets used in the experiments exhibit variations in environmental conditions as the route is traversed.
 
 \subsubsection{CTA-Rail}
-The CTA-Rail (Chicago Transit Authority) dataset (Fig. \ref{fig:ctaTraj}) comprises of two videos traversing a 23 km railway route (Blue Line, Forest Park to O'Hare), recorded once in 2014 \cite{ctaRail2014} and then in 2015 \cite{ctaRail2015}, available online. The camera is placed at the head of the train facing forward the railway track. The videos comprise of scenes from train stations platforms, subway station platforms, subway tunnels, and railroad tracks within highways and urban areas. The raw videos are approximately 73 and 84 minutes in duration with 132670 and 149090 frames respectively. We used the 480p version of the video and processed every 200th frame for all the experiments. The resultant reference and query databases have therefore 656 and 738 image frames respectively.
+The CTA-Rail (Chicago Transit Authority) dataset (Fig. \ref{fig:ctaTraj}) comprises of two videos traversing a 23 km railway route (Blue Line, Forest Park to O'Hare), recorded once in 2014 \cite{ctaRail2014} and then in 2015 \cite{ctaRail2015}, available online. A single camera is placed at the head of the train facing forward the railway track. The videos comprise of scenes from train stations platforms, subway station platforms, subway tunnels, and railroad tracks within highways and urban areas. The raw videos are approximately 73 and 84 minutes in duration with 132670 and 149090 frames respectively. We used the 480p version of the video and processed every 200th frame for all the experiments. The resultant reference and query databases have therefore 656 and 738 image frames respectively.
 
 \subsubsection{Campus Indoor-Outdoor}
-The Campus Indoor-Outdoor dataset comprises of two videos with repeated traversal of a part of Ulm University of Applied Sciences' campus from outside lawn to inside corridor \cite{indoorOutdoor1,indoorOutdoor2}. The videos have been recorded using a hand-held device and exhibits jerky motion with huge motion blur. The raw videos are cropped to remove the comments at the bottom and an overlaid navigation display on the right side. The videos are also snipped from beginning so that the starting point is aligned in both the datasets. The datasets comprise of scenes from outside the campus, with trees, grass and pavement, and from inside the campus, traversing through entrance hall, staircase, lobby and corridor. The reference and query database is processed by using every 10th image and therefore uses 355 and 300 frames respectively.
+The Campus Indoor-Outdoor dataset comprises of two videos with repeated traversal of a part of Ulm University of Applied Sciences' campus from outside lawn to inside corridor \cite{indoorOutdoor1,indoorOutdoor2}. The videos have been recorded using a hand-held device with single camera and exhibits jerky motion with huge motion blur. The raw videos are cropped to remove the comments at the bottom and an overlaid navigation display on the right side. The videos are also snipped from beginning so that the starting point is aligned in both the datasets. The datasets comprise of scenes from outside the campus, with trees, grass and pavement, and from inside the campus, traversing through entrance hall, staircase, lobby and corridor. The reference and query database is processed by using every 10th image and therefore uses 355 and 300 frames respectively.
 
 \subsubsection{Ground Truth}
 The place recognition ground truth for both the datasets was generated manually for intermittent frames and then interpolated for rest of the image sequence. A query image is considered to be a true positive match for the reference image if its index lies within a range of 5 image frames from the ground truth index.
@@ -265,6 +265,7 @@ We used maximum F1 Score to measure place recognition performance of SeqSLAM by 
   SeqSLAM & Proposed Approach & SeqSLAM & Proposed Approach \\
   \multicolumn{2}{c}{\textbf{R = 10}, P = 8} & \multicolumn{2}{c}{\textbf{R = 160}, P = 8} \\
   \multicolumn{4}{c}{\emph{Campus Indoor-Outdoor Dataset}} \\
+  \\
   \includegraphics[width=\imgW,height=\imgH]{cta-rail-without-bad-106} &
   \includegraphics[width=\imgW,height=\imgH]{cta-rail-with-bad-306} &
   \includegraphics[width=\imgW,height=\imgH]{cta-rail-without-good-110} &
@@ -304,7 +305,8 @@ The images used for finding SAD score are preprocessed by down-sampling them to 
 \subsection{Physical Space Segmentation}
 Fig. \ref{fig:RPerformance} shows a performance comparison for both the datasets with respect to the parameter $R$ alone. The curves here give us an insight to understand how an optimal value for segmenting the physical space can be chosen. For both the datasets, the performance of vanilla SeqSLAM and the proposed approach becomes almost similar at a certain point, beyond which no significant improvement occurs. This happens when $R$ is approximately between 20 and 25, which is almost 1 km of journey in the CTA Rail dataset captured at speed of train and about 50 m for Campus dataset captured at normal human speed. The visual data captured in both the cases is therefore sufficient enough to correctly segment its physical space. If the physical region spanned were to be smaller than this, it would have created an inter-region redundancy of visual data which would mean more confusing matching places. Hence, the optimal value for segmenting the environment would be based on the average rate of persistence of particular environmental conditions. However, it would still fail for the cases where there is a large variance in the span of different conditions existing within the environment, and a proper segmented environment based on semantic information will be the key to perform better.
 
-
+\subsection{Transitions Within Environment}
+We have demonstrated performance improvement for a place recognition system by appropriately handling different visual conditions within the environment, but one also needs to be careful about the exact point of transition within these different conditional settings. In general, there is a sequence of images, that are encountered, for example, while moving from outside the tunnel to inside the tunnel and vice versa. The current state-of-the-art place categorization module trained on limited number of places or scene attributes cannot always effectively discriminate the transition point from the environments where the transition takes place. This leads to false matching of false semantic labels and hence poor performance at those points. Moreover, in our current approach, the transition areas, spanning only few images, also get ignored during the label filtering process. Though, it can be taken care of by using smaller filtering window $s$ (described in earlier sections), but then it would demand correct semantic labels with temporal consistency. This problem makes more sense to be solved from the place categorization side, by training place categories at a further fine level, such that being inside the tunnel or outside of it is also discriminated from starting to seeing the tunnel entry or the exit, which actually marks the transition to a new environment, which also becomes a part of our future work.
 
 \begin{table}[!h]
 \caption{SeqSLAM parameters.}
@@ -329,13 +331,7 @@ Fig. \ref{fig:RPerformance} shows a performance comparison for both the datasets
 \end{table}
 
 \subsection{Future Work}
-\hl{Investigating spatio-temporal relationship between places with similar visual appearances, dynamically varying the sequence length to improve localization results?
-
-Grid Cells?
-
-3D object proposals to further inform place rec?
-
-Others?}
+The current work can be extended to incorporate labels of place categories or scene attributes defined at finer levels, as also discussed in previous section. Such fine level place categorization will be directed towards the ordinary place recognition problem where each place despite being from same semantic category, is treated as a separate place. It would also be worth exploring ways to dynamically determine the sequence length for matching places while using the semantic place information.  We would also like to investigate better ways of generating semantic labels with temporal coherence, given that object recognition and place categorization like research problems usually focus on single images instead of image sequences. Another interesting direction could be a deep-learning framework, using a combination of LSTM and CNN to effectively exploit the temporal and spatial information respectively and infer relationship between places with similar visual appearances.
 
 
 
