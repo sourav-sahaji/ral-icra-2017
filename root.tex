@@ -65,7 +65,7 @@ The problem of place recognition actually comprises two distinct subproblems; ``
 
 The problem of ``traditional?'' place recognition \hl{(find new word for ordinary)} typically focuses on recognizing specific locations in the world stored within a database of ``places''. This form of place recognition is very powerful, enabling localization on very large scales~\cite{Cummins2009} and during difficult day and night traverses of an environment~\cite{Milford2012}. The problem of place categorization is similar to the place recognition problem, where environments are evaluated to determine the type of place from a database of place types. 
 
-We see the problem of place recognition as an extension to the place categorization problem, where it is possible to use similar frameworks to solve both problems. The place categorization framework has less 'labels' than place recognition and more training examples of what represents a particular place category whereas place recognition has a ``label'' within a database representing every location in the environment. We also highlight difference in application between the two approaches, noting that within place recognition frameworks, the goal is to identify and utilize differences between locations within the dataset to enable unique localization. Place categorization algorithms highlight the similarity between intra-class samples to create a comprehensive representation of a particular place type. 
+We see the problem of place categorization as an extension to the place recognition problem, where it is possible to use similar frameworks to solve both problems. We highlight the main differences in application between the two approaches, noting that within place recognition frameworks, the goal is to identify and utilize differences between locations within the dataset to enable unique localization. Place categorization algorithms highlight the similarity between intra-class samples to create a comprehensive representation of a particular place type and are expected to be able to generalize class labels to extend and classify to unseen environments. The place categorization framework has typically utilizes less 'labels' than place recognition and more training examples of what represents a particular place category whereas place recognition has a ``label'' within a database representing every location in the environment. 
 
 \begin{figure}
 	\includegraphics[clip, trim=1cm 5cm 0cm 2cm,scale=0.27]{flowchart}
@@ -99,16 +99,33 @@ The paper proceeds as follows. In Section 2, we review literature with a focus o
 In this section, we review current research in the areas of place categorization and place recognition. We specifically focus on place recognition, semantic mapping and place categorization frameworks. 
 
 \subsection{Place Recognition}
-Visual place recognition leverages a visual map of the environment and compares visual information, typically from a camera sensor, to the map data to determine the current location of the camera within the map. There are many techniques which have been proposed to solve this problem of determining where an image has been taken within an environment. Typically, these approaches leverage single frame matching to determine the location of the camera in the environment. The key goal of place recognition frameworks is to separate places in the environment and highlight the unique attributes or features which uniquely describe individual locations in the environment \hl{[ref - fabmap, vocabulary trees]}. 
+Visual place recognition leverages a visual map of the environment and compares visual information, typically from a camera sensor, to the map data to determine the current location of the camera within the map. There are many techniques which have been proposed to solve this problem of determining where an image has been taken within an environment. Typically, these approaches leverage single frame matching to determine the location of the camera in the environment. The key goal of place recognition frameworks is to separate places in the environment and highlight the unique attributes or features which uniquely describe individual locations in the environment~\cite{Cummins2009,nister2006scalable}. 
 
-Temporal information has been incorporated into the place recognition framework with the introduction of the SeqSLAM framework, integrating place hypotheses over small distances to accrue evidence and improve place recognition performance. 
+There have been many attempts to improve performance of place recognition systems. This has included the inclusion of temporal information, fusing multiple sensory modalities and implementing unique preprocessing steps to improve localization capabilities like shadow removal techniques. 
+
+Temporal information has been incorporated into the place recognition framework with the introduction of the SeqSLAM framework~\cite{Milford2012}, integrating place hypotheses over small distances to accrue evidence and improve place recognition performance.
+
+Multi-sensor fusion has been investigated in a number of works~\cite{tapus2006cognitive,Milford2013a}, attempting to introduce unique sensory modalities which have different failure modes to produce robust place estimates. 
+
+Furthermore, the introduction of unique sensor preprocessing techniques to improve sensor data for place recognition has also been explored. Frameworks utilizing techniques for shadow removal~\cite{corke2013dealing} or the introduction of illumination invariant color spaces~\cite{mcmanus2014shady} to remove temporal or environmental changes from images to improve localization. 
+
+The work presented in place categorization attempts to develop generic capability to identify types of places in the world potentially enabling improvements in place recognition capabilities. 
+
+%What is evident from the work presented in [Smart Paper] is that additional information 
 
 \subsection{Place Categorization}
-\cite{sunderhauf2016place}
 
-\hl{Emphasize the generalization capability of categorization over place rec  - Maybe echo earlier. }
+Place categorization systems are an extension of the place recognition problem and attempt to attach semantic meaning particular places in an environment; attempting to utilize labels from a training set like indoor, outdoors, kitchen, office and bedroom to categorize the location within which an image was taken. These frameworks are powerful as they facilitate generalization of room labels to different environments, for example identifying a bedroom within an unexplored house, potentially enabling robotic platforms to perform generic tasks in unknown environments by recognizing the type of place~\cite{wu2009visual}. 
 
-\hl{I dont have any background in this. If you have a particular message you want to get across here, let me know and I can try to write something. }
+There have been a number of works which attempt to imbue traditional SLAM architectures with the ability to semantically label locations in an environment\cite{sunderhauf2016place, ranganathan2011visual}. These types of frameworks utilize the place categorization labels to inform information about a space, for example a location is mostly likely a kitchen, but are not utilized in the process of generating the map or performing place recognition or localization. 
+
+Place categorization systems have been leveraged in previous work to improve object detection and classification, enabling reduction of the object search space and improvement in object recognition performance~\cite{torralba2003context}.
+
+However, there has been no prior work utilizing place categorization information to improve place recognition place estimates. 
+
+%\hl{Emphasize the generalization capability of categorization over place rec  - Maybe echo earlier. }
+
+%\hl{I dont have any background in this. If you have a particular message you want to get across here, let me know and I can try to write something. }
 
 
 \section{Proposed Method}
@@ -324,7 +341,7 @@ Others?}
 
 %\section{Conclusion}
 
-\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
+%\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
                                   % the textheight of the last page by a suitable amount.
                                   % This command does not take effect until the next page
