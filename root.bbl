@@ -34,16 +34,6 @@ M.~J. Milford and G.~F. Wyeth, ``{SeqSLAM: Visual route-based navigation for
   sunny summer days and stormy winter nights},'' \emph{Proceedings - IEEE
   International Conference on Robotics and Automation}, pp. 1643--1649, 2012.
 
-\bibitem{cnnPlaces365Github}
-B.~Zhou, ``{The Places365-CNNs},''
-  \url{https://github.com/metalbubble/places365}, 2016, [Online; accessed
-  15-August-2016].
-
-\bibitem{zhou2014learning}
-B.~Zhou, A.~Lapedriza, J.~Xiao, A.~Torralba, and A.~Oliva, ``{Learning deep
-  features for scene recognition using places database},'' in \emph{Advances in
-  neural information processing systems}, 2014, pp. 487--495.
-
 \bibitem{nister2006scalable}
 D.~Nister and H.~Stewenius, ``{Scalable recognition with a vocabulary tree},''
   in \emph{Computer vision and pattern recognition, 2006 IEEE computer society
@@ -97,6 +87,16 @@ A.~Torralba, K.~P. Murphy, W.~T. Freeman, and M.~A. Rubin, ``Context-based
   vision system for place and object recognition,'' in \emph{Computer Vision,
   2003. Proceedings. Ninth IEEE International Conference on}.\hskip 1em plus
   0.5em minus 0.4em\relax IEEE, 2003, pp. 273--280.
+
+\bibitem{cnnPlaces365Github}
+B.~Zhou, ``{The Places365-CNNs},''
+  \url{https://github.com/metalbubble/places365}, 2016, [Online; accessed
+  15-August-2016].
+
+\bibitem{zhou2014learning}
+B.~Zhou, A.~Lapedriza, J.~Xiao, A.~Torralba, and A.~Oliva, ``{Learning deep
+  features for scene recognition using places database},'' in \emph{Advances in
+  neural information processing systems}, 2014, pp. 487--495.
 
 \bibitem{Patterson2012SunAttributes}
 G.~Patterson and J.~Hays, ``Sun attribute database: Discovering, annotating,
