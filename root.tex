@@ -217,8 +217,8 @@ where $i$ iterates over all the reference images, $K$ iterates over all the segm
 Fig. \ref{fig:SADmatRdisplay} shows the method described in this section for choosing $R$. The incorporation of segmented regions based neighborhood normalization as shown, makes the appropriate use of semantic information by handling the different physical environments separately.
 
 \begin{figure}
- \includegraphics[clip, trim=3cm 7cm 0cm 2cm,scale=0.28]{PlaceMatchesAtTransition}
- \caption{Matched places at the point of transition within an environment for CTA-Rail dataset (top) and Campus Indoor-Outdoor dataset (bottom).}
+ \includegraphics[clip, trim=0cm 7cm 0cm 2cm,scale=0.25]{PlaceMatchesAtTransition}
+ \caption{Matched places at the point of transition within an environment for CTA-Rail dataset where environment changes from being inside the tunnel to outside the tunnel.}
  \label{fig:placeMatches}
 \end{figure}
 
@@ -295,7 +295,7 @@ The parameters for SeqSLAM used for all the experiments are shown in Table \ref{
 \section{Results}
 We used maximum F1 score to measure changes in place recognition performance using the proposed approach. The trajectory uniqueness parameter (described in \cite{Milford2012}), that is, the threshold for deciding a correctly matched place was varied to calculate precision-recall curve and maximum F1 score. The comparative results were generated between the proposed method and vanilla SeqSLAM for two real world datasets. In order to gain an in-depth understanding of the place recognition performance changes due to proposed approach, we used two parameters of SeqSLAM method, patch normalization window size ($P$) and neighborhood normalization zone width ($R$), to measure the trends in performance change. The results are as shown in Fig. \ref{fig:RPerformance} and \ref{fig:performanceChart}, and the significance and effect of these parameters is discussed in subsequent section. 
 
-Fig. \ref{fig:placeMatches} shows example images that match at the transition point within an environment. It shows the transition for CTA-Rail dataset from inside the tunnel to outside, and for the Campus Indoor-Outdoor dataset from outdoor environment to the indoor. The changes in appearance of environment are evident from the change in lighting and enclosedness.
+Fig. \ref{fig:placeMatches} shows example images that match at the transition point within an environment. It shows the transition for CTA-Rail dataset from inside the tunnel to outside. The changes in appearance of environment are evident from the change in lighting and enclosedness.
 
 \newcommand{\imgH}{2.6cm}
 \newcommand{\imgW}{4cm}
