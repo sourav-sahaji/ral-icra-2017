@@ -34,6 +34,73 @@ M.~J. Milford and G.~F. Wyeth, ``{SeqSLAM: Visual route-based navigation for
   sunny summer days and stormy winter nights},'' \emph{Proceedings - IEEE
   International Conference on Robotics and Automation}, pp. 1643--1649, 2012.
 
+\bibitem{thompson1993vision}
+W.~B. Thompson and H.~{Pick Jr}, ``{Vision-based navigation},'' in \emph{Proc.
+  ARPA Image Understanding Workshop}.\hskip 1em plus 0.5em minus 0.4em\relax
+  Citeseer, 1993.
+
+\bibitem{ulrich2000appearance}
+I.~Ulrich and I.~Nourbakhsh, ``{Appearance-based place recognition for
+  topological localization},'' in \emph{Robotics and Automation, 2000.
+  Proceedings. ICRA'00. IEEE International Conference on}, vol.~2.\hskip 1em
+  plus 0.5em minus 0.4em\relax Ieee, 2000, pp. 1023--1029.
+
+\bibitem{kejriwal2016high}
+N.~Kejriwal, S.~Kumar, and T.~Shibata, ``{High performance loop closure
+  detection using bag of word pairs},'' \emph{Robotics and Autonomous Systems},
+  vol.~77, pp. 55--65, 2016.
+
+\bibitem{lowry2016supervised}
+S.~Lowry and M.~J. Milford, ``{Supervised and unsupervised linear learning
+  techniques for visual place recognition in changing environments},''
+  \emph{IEEE Transactions on Robotics}, vol.~32, no.~3, pp. 600--613, 2016.
+
+\bibitem{linegar2016made}
+C.~Linegar, W.~Churchill, and P.~Newman, ``{Made to measure: Bespoke landmarks
+  for 24-hour, all-weather localisation with a camera},'' in \emph{Robotics and
+  Automation (ICRA), 2016 IEEE International Conference on}.\hskip 1em plus
+  0.5em minus 0.4em\relax IEEE, 2016, pp. 787--794.
+
+\bibitem{pepperell2016routed}
+E.~Pepperell, P.~Corke, and M.~Milford, ``{Routed roads: Probabilistic
+  vision-based place recognition for changing conditions, split streets and
+  varied viewpoints},'' \emph{The International Journal of Robotics Research},
+  vol.~35, no.~9, pp. 1057--1179, 2016.
+
+\bibitem{McManus2015}
+\BIBentryALTinterwordspacing
+C.~McManus, B.~Upcroft, and P.~Newman, ``{Learning place-dependant features for
+  long-term vision-based localisation},'' \emph{Autonomous Robots}, vol.~39,
+  no.~3, pp. 363--387, 2015. [Online]. Available:
+  \url{http://dx.doi.org/10.1007/s10514-015-9463-y}
+\BIBentrySTDinterwordspacing
+
+\bibitem{chen2017deep}
+Z.~Chen, A.~Jacobson, N.~Sunderhauf, B.~Upcroft, L.~Liu, C.~Shen, I.~Reid, and
+  M.~Milford, ``{Deep Learning Features at Scale for Visual Place
+  Recognition},'' \emph{arXiv preprint arXiv:1701.05105}, 2017.
+
+\bibitem{linegar2015work}
+C.~Linegar, W.~Churchill, and P.~Newman, ``{Work smart, not hard: Recalling
+  relevant experiences for vast-scale but time-constrained localisation},'' in
+  \emph{Robotics and Automation (ICRA), 2015 IEEE International Conference
+  on}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2015, pp. 90--97.
+
+\bibitem{Maddern}
+W.~Maddern, A.~D. Stewart, and P.~Newman, ``{LAPS-II: 6-DoF Day and Night
+  Visual Localisation with Prior 3D Structure for Autonomous Road Vehicles}.''
+
+\bibitem{nelson2015dusk}
+P.~Nelson, W.~Churchill, I.~Posner, and P.~Newman, ``{From dusk till dawn:
+  Localisation at night using artificial light sources},'' in \emph{Robotics
+  and Automation (ICRA), 2015 IEEE International Conference on}.\hskip 1em plus
+  0.5em minus 0.4em\relax IEEE, 2015, pp. 5245--5252.
+
+\bibitem{maddern20161}
+W.~Maddern, G.~Pascoe, C.~Linegar, and P.~Newman, ``{1 year, 1000 km: The
+  Oxford RobotCar dataset},'' \emph{The International Journal of Robotics
+  Research}, p. 0278364916679498, 2016.
+
 \bibitem{nister2006scalable}
 D.~Nister and H.~Stewenius, ``{Scalable recognition with a vocabulary tree},''
   in \emph{Computer vision and pattern recognition, 2006 IEEE computer society
