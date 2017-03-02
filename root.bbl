@@ -39,33 +39,11 @@ W.~B. Thompson and H.~{Pick Jr}, ``{Vision-based navigation},'' in \emph{Proc.
   ARPA Image Understanding Workshop}.\hskip 1em plus 0.5em minus 0.4em\relax
   Citeseer, 1993.
 
-\bibitem{ulrich2000appearance}
-I.~Ulrich and I.~Nourbakhsh, ``{Appearance-based place recognition for
-  topological localization},'' in \emph{Robotics and Automation, 2000.
-  Proceedings. ICRA'00. IEEE International Conference on}, vol.~2.\hskip 1em
-  plus 0.5em minus 0.4em\relax Ieee, 2000, pp. 1023--1029.
-
-\bibitem{kejriwal2016high}
-N.~Kejriwal, S.~Kumar, and T.~Shibata, ``{High performance loop closure
-  detection using bag of word pairs},'' \emph{Robotics and Autonomous Systems},
-  vol.~77, pp. 55--65, 2016.
-
-\bibitem{lowry2016supervised}
-S.~Lowry and M.~J. Milford, ``{Supervised and unsupervised linear learning
-  techniques for visual place recognition in changing environments},''
-  \emph{IEEE Transactions on Robotics}, vol.~32, no.~3, pp. 600--613, 2016.
-
 \bibitem{linegar2016made}
 C.~Linegar, W.~Churchill, and P.~Newman, ``{Made to measure: Bespoke landmarks
   for 24-hour, all-weather localisation with a camera},'' in \emph{Robotics and
   Automation (ICRA), 2016 IEEE International Conference on}.\hskip 1em plus
   0.5em minus 0.4em\relax IEEE, 2016, pp. 787--794.
-
-\bibitem{pepperell2016routed}
-E.~Pepperell, P.~Corke, and M.~Milford, ``{Routed roads: Probabilistic
-  vision-based place recognition for changing conditions, split streets and
-  varied viewpoints},'' \emph{The International Journal of Robotics Research},
-  vol.~35, no.~9, pp. 1057--1179, 2016.
 
 \bibitem{McManus2015}
 \BIBentryALTinterwordspacing
@@ -86,38 +64,10 @@ C.~Linegar, W.~Churchill, and P.~Newman, ``{Work smart, not hard: Recalling
   \emph{Robotics and Automation (ICRA), 2015 IEEE International Conference
   on}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2015, pp. 90--97.
 
-\bibitem{Maddern}
-W.~Maddern, A.~D. Stewart, and P.~Newman, ``{LAPS-II: 6-DoF Day and Night
-  Visual Localisation with Prior 3D Structure for Autonomous Road Vehicles}.''
-
-\bibitem{nelson2015dusk}
-P.~Nelson, W.~Churchill, I.~Posner, and P.~Newman, ``{From dusk till dawn:
-  Localisation at night using artificial light sources},'' in \emph{Robotics
-  and Automation (ICRA), 2015 IEEE International Conference on}.\hskip 1em plus
-  0.5em minus 0.4em\relax IEEE, 2015, pp. 5245--5252.
-
 \bibitem{maddern20161}
 W.~Maddern, G.~Pascoe, C.~Linegar, and P.~Newman, ``{1 year, 1000 km: The
   Oxford RobotCar dataset},'' \emph{The International Journal of Robotics
   Research}, p. 0278364916679498, 2016.
-
-\bibitem{nister2006scalable}
-D.~Nister and H.~Stewenius, ``{Scalable recognition with a vocabulary tree},''
-  in \emph{Computer vision and pattern recognition, 2006 IEEE computer society
-  conference on}, vol.~2.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2006,
-  pp. 2161--2168.
-
-\bibitem{tapus2006cognitive}
-A.~Tapus and R.~Siegwart, ``{A cognitive modeling of space using fingerprints
-  of places for mobile robot navigation},'' in \emph{Proceedings 2006 IEEE
-  International Conference on Robotics and Automation, 2006. ICRA 2006.}\hskip
-  1em plus 0.5em minus 0.4em\relax IEEE, 2006, pp. 1188--1193.
-
-\bibitem{Milford2013a}
-M.~Milford and A.~Jacobson, ``{Brain-inspired Sensor Fusion for Navigating
-  Robots},'' in \emph{International Conference on Robotics and
-  Automation}.\hskip 1em plus 0.5em minus 0.4em\relax Karlsruhe, Germany: IEEE,
-  2013.
 
 \bibitem{corke2013dealing}
 P.~Corke, R.~Paul, W.~Churchill, and P.~Newman, ``Dealing with shadows:
@@ -132,16 +82,15 @@ C.~McManus, W.~Churchill, W.~Maddern, A.~D. Stewart, and P.~Newman, ``Shady
   Automation (ICRA)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2014, pp.
   901--906.
 
+\bibitem{Maddern}
+W.~Maddern, A.~D. Stewart, and P.~Newman, ``{LAPS-II: 6-DoF Day and Night
+  Visual Localisation with Prior 3D Structure for Autonomous Road Vehicles}.''
+
 \bibitem{wu2009visual}
 J.~Wu, H.~I. Christensen, and J.~M. Rehg, ``Visual place categorization:
   Problem, dataset, and algorithm,'' in \emph{2009 IEEE/RSJ International
   Conference on Intelligent Robots and Systems}.\hskip 1em plus 0.5em minus
   0.4em\relax IEEE, 2009, pp. 4763--4770.
-
-\bibitem{ranganathan2011visual}
-A.~Ranganathan and J.~Lim, ``Visual place categorization in maps,'' in
-  \emph{2011 IEEE/RSJ International Conference on Intelligent Robots and
-  Systems}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2011, pp. 3982--3989.
 
 \bibitem{mohan2015environment}
 M.~Mohan, D.~G{\'a}lvez-L{\'o}pez, C.~Monteleoni, and G.~Sibley, ``Environment
@@ -170,10 +119,27 @@ G.~Patterson and J.~Hays, ``Sun attribute database: Discovering, annotating,
   and recognizing scene attributes,'' in \emph{Proceeding of the 25th
   Conference on Computer Vision and Pattern Recognition (CVPR)}, 2012.
 
-\bibitem{timelineRWT}
-ReadWriteThink, ``{ReadWriteThink - http://www.readwritethink.org/},''
-  \url{http://www.readwritethink.org/files/resources/interactives/timeline_2/},
-  2016, [Online; accessed 15-August-2016].
+\bibitem{honkela2001nonlinear}
+A.~Honkela, ``{Nonlinear switching state-space models},'' Ph.D. dissertation,
+  UNIVERSITY OF TECHNOLOGY, 2001.
+
+\bibitem{hmmlearn}
+S.~Lebedev, ``hmmlearn,'' \url{https://github.com/hmmlearn/hmmlearn}, 2017,
+  [Online; accessed 02-March-2017].
+
+\bibitem{baum1966statistical}
+L.~E. Baum and T.~Petrie, ``{Statistical inference for probabilistic functions
+  of finite state Markov chains},'' \emph{The annals of mathematical
+  statistics}, vol.~37, no.~6, pp. 1554--1563, 1966.
+
+\bibitem{celeux2008selecting}
+G.~Celeux and J.-B. Durand, ``{Selecting hidden Markov model state number with
+  cross-validated likelihood},'' \emph{Computational Statistics}, vol.~23,
+  no.~4, pp. 541--564, 2008.
+
+\bibitem{beal2002infinite}
+M.~J. Beal, Z.~Ghahramani, and C.~E. Rasmussen, ``{The infinite hidden Markov
+  model}.''
 
 \bibitem{milford2015sequence}
 M.~Milford, C.~Shen, S.~Lowry, N.~Suenderhauf, S.~Shirazi, G.~Lin, F.~Liu,
@@ -189,32 +155,14 @@ Y.~Wang, X.~Hu, J.~Lian, L.~Zhang, and X.~Kong, ``Improved seq slam for
   International Conference on}, vol.~1.\hskip 1em plus 0.5em minus 0.4em\relax
   IEEE, 2015, pp. 260--264.
 
-\bibitem{milford2015place}
-M.~Milford, H.~Kim, M.~Mangan, S.~Leutenegger, T.~Stone, B.~Webb, and
-  A.~Davison, ``Place recognition with event-based cameras and a neural
-  implementation of seqslam,'' \emph{arXiv preprint arXiv:1505.04548}, 2015.
-
-\bibitem{ctaTrajGMap}
-G.~Maps, ``{Google Maps: Directions from Forest Park, IL, USA to O'Hare
-  International Airport, IL, USA},'' \url{https://goo.gl/maps/fX6aSDMnJpC2},
-  2016, [Online; accessed 15-August-2016].
-
-\bibitem{ctaRail2014}
-CTAConnections, ``{CTA Ride the Rails: Blue Line to O'Hare in Real Time},''
-  \url{https://youtu.be/n6xJFpPY_7s}, 2014, [Online; accessed 15-August-2016].
-
 \bibitem{ctaRail2015}
-------, ``{CTA Ride the Rails: Blue Line to O'Hare in Real Time (2015)},''
-  \url{https://youtu.be/Kw_BbQoDv8o}, 2015, [Online; accessed 15-August-2016].
+CTAConnections, ``{CTA Ride the Rails: Blue Line to O'Hare in Real Time
+  (2015)},'' \url{https://youtu.be/Kw_BbQoDv8o}, 2015, [Online; accessed
+  15-August-2016].
 
 \bibitem{indoorOutdoor1}
 RoboticsAtHsUlm, ``{Seamless Indoor and Outdoor Navigation based on
   OpenStreetMap},'' \url{https://youtu.be/_ConuKUOXH4}, 2016, [Online; accessed
   15-August-2016].
-
-\bibitem{indoorOutdoor2}
-------, ``{Demonstrating System Integration by Composition: Seamless Indoor and
-  Outdoor Navigation},'' \url{https://youtu.be/fS3PJMswlH4}, 2015, [Online;
-  accessed 15-August-2016].
 
 \end{thebibliography}
